@@ -222,7 +222,7 @@ function createResourceCardHtml(item) {
         <div class="mt-3.5 flex items-center justify-between text-[11px] text-slate-400 font-medium pt-2 border-t border-slate-100">
           <span class="inline-flex items-center gap-1.5 text-slate-600 font-semibold bg-slate-100 px-2 py-0.5 rounded">
             <i class="ri-attachment-line"></i>
-            ${item.fileFormat} • ${item.fileSize}
+            ${item.fileFormat} • ${(item.fileSize || '').replace(/⭐|★/g, 'stars').trim()}
           </span>
           <span class="flex items-center gap-1"><i class="ri-download-cloud-line text-slate-400"></i> ${item.downloadsCount}</span>
         </div>
@@ -245,7 +245,6 @@ function createResourceCardHtml(item) {
       </div>
     </article>
   `;
-}
 }
 
 // Renderizar tarjeta de Tutor Experto
@@ -332,7 +331,7 @@ function createCommunityCardHtml(community) {
         }"
       >
         <i class="${community.isMember ? 'ri-check-line text-emerald-600' : 'ri-user-add-line'}"></i>
-        <span>${community.isMember ? 'Miembro Activo ✓' : 'Unirme a la Comunidad'}</span>
+        <span>${community.isMember ? 'Miembro Activo' : 'Unirme a la Comunidad'}</span>
       </button>
     </div>
   `;
@@ -505,7 +504,7 @@ function renderResourcePreviewContent(item) {
             <i onclick="submitRating(${item.id}, 4)" class="ri-star-fill text-amber-400 hover:scale-125 transition-transform text-sm"></i>
             <i onclick="submitRating(${item.id}, 5)" class="ri-star-fill text-amber-400 hover:scale-125 transition-transform text-sm"></i>
           </div>
-          <span class="text-xs font-bold text-slate-800 ml-1">${item.rating.toFixed(1)} ★</span>
+          <span class="text-xs font-bold text-slate-800 ml-1">${item.rating.toFixed(1)} / 5</span>
         </div>
       </div>
     </div>
