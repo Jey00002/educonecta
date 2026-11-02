@@ -22,32 +22,33 @@ function renderStarRating(rating) {
   return html;
 }
 
-// Renderizar tarjeta de recurso académico multiformato
+// Renderizar tarjeta de recurso académico multiformato (Craft Design)
 function createResourceCardHtml(item) {
   const type = item.resourceType || 'pdf';
 
-  // Badge y multimedia contextual
   let typeBadgeHtml = '';
   let mediaPreviewHtml = '';
   let ctaButtonsHtml = '';
+  let cardClass = 'edu-card flex flex-col justify-between overflow-hidden group';
 
   if (type === 'video') {
+    cardClass = 'edu-card edu-card-video flex flex-col justify-between overflow-hidden group';
     typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
-        <i class="ri-youtube-fill text-rose-600"></i> Video Clase
+      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-rose-50 text-rose-700 border border-rose-200 shadow-2xs">
+        <i class="ri-youtube-fill text-rose-600 text-xs"></i> Video Clase
       </span>
     `;
 
     mediaPreviewHtml = `
-      <div class="relative rounded-xl overflow-hidden mb-3.5 aspect-video bg-slate-900 group cursor-pointer" onclick="openMediaModal(${item.id})">
-        <img src="${item.thumbnailUrl || 'https://images.unsplash.com/photo-1516116211227-bbc13c749013?auto=format&fit=crop&q=80&w=600'}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent flex items-center justify-center">
-          <div class="w-10 h-10 rounded-full bg-rose-600/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-            <i class="ri-play-fill text-lg ml-0.5"></i>
+      <div class="relative rounded-xl overflow-hidden mb-3 aspect-video bg-slate-950 group/video cursor-pointer border border-slate-900/10 shadow-xs" onclick="openMediaModal(${item.id})">
+        <img src="${item.thumbnailUrl || 'https://images.unsplash.com/photo-1516116211227-bbc13c749013?auto=format&fit=crop&q=80&w=600'}" alt="${item.title}" class="w-full h-full object-cover group-hover/video:scale-105 transition-transform duration-300">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent flex items-center justify-center">
+          <div class="w-11 h-11 rounded-full bg-rose-600 text-white flex items-center justify-center shadow-lg shadow-rose-900/40 group-hover/video:scale-110 transition-transform">
+            <i class="ri-play-fill text-xl ml-0.5"></i>
           </div>
         </div>
-        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded text-[10px] font-bold bg-black/80 text-white backdrop-blur-xs flex items-center gap-1">
-          <i class="ri-time-line"></i> ${item.fileSize}
+        <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-black/80 text-white backdrop-blur-xs flex items-center gap-1 border border-white/10">
+          <i class="ri-time-line text-[11px]"></i> ${item.fileSize}
         </span>
       </div>
     `;
@@ -56,35 +57,51 @@ function createResourceCardHtml(item) {
       <button 
         onclick="openMediaModal(${item.id})"
         class="btn-primary text-xs shrink-0 bg-rose-600 hover:bg-rose-700 text-white border-rose-600 shadow-xs"
-        title="Ver video clase de YouTube"
+        title="Ver video clase en reproductor universitario"
       >
         <i class="ri-play-circle-line text-sm"></i>
         <span>Ver Clase</span>
       </button>
     `;
   } else if (type === 'repo') {
+    cardClass = 'edu-card edu-card-repo flex flex-col justify-between overflow-hidden group';
     typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-800 text-white shadow-xs">
-        <i class="ri-github-fill"></i> GitHub Repo
+      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-slate-900 text-white shadow-2xs">
+        <i class="ri-github-fill text-xs"></i> GitHub Repo
       </span>
     `;
 
     mediaPreviewHtml = `
-      <div class="p-3 mb-3.5 bg-slate-900 rounded-xl font-mono text-[11px] text-slate-100 flex items-center justify-between border border-slate-800">
-        <span class="flex items-center gap-1.5 text-emerald-400 font-semibold truncate">
-          <i class="ri-code-s-slash-line"></i> ${item.language || 'Código Fuente'}
-        </span>
-        <span class="flex items-center gap-1 text-amber-400 font-bold shrink-0">
-          <i class="ri-star-fill text-xs"></i> ${item.stars || 148}
-        </span>
+      <div class="terminal-window mb-3">
+        <div class="terminal-header">
+          <div class="flex items-center gap-1.5">
+            <span class="terminal-dot bg-rose-500/80"></span>
+            <span class="terminal-dot bg-amber-500/80"></span>
+            <span class="terminal-dot bg-emerald-500/80"></span>
+            <span class="ml-2 font-mono text-[10px] text-slate-400 font-medium">${item.language || 'git-repo'}</span>
+          </div>
+          <span class="flex items-center gap-1 font-mono text-[10px] text-amber-300 font-bold">
+            <i class="ri-star-fill text-[11px]"></i> ${item.stars || 148}
+          </span>
+        </div>
+        <div class="terminal-body flex items-center justify-between py-2 px-3 bg-[#090d14]">
+          <code class="text-[11px] text-emerald-400 font-mono truncate max-w-[210px] select-all">$ ${item.cloneCommand || 'git clone ' + item.githubUrl}</code>
+          <button 
+            onclick="copyCloneCommand('${item.cloneCommand || 'git clone ' + item.githubUrl}', this)" 
+            class="text-slate-400 hover:text-white p-1 rounded transition text-xs focus:outline-none" 
+            title="Copiar comando git clone"
+          >
+            <i class="ri-file-copy-line"></i>
+          </button>
+        </div>
       </div>
     `;
 
     ctaButtonsHtml = `
       <div class="flex items-center gap-1.5 shrink-0">
         <button 
-          onclick="copyCloneCommand('${item.cloneCommand || 'git clone ' + item.githubUrl}')"
-          class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition"
+          onclick="copyCloneCommand('${item.cloneCommand || 'git clone ' + item.githubUrl}', this)"
+          class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition"
           title="Copiar comando git clone"
         >
           <i class="ri-file-copy-line"></i>
@@ -97,15 +114,32 @@ function createResourceCardHtml(item) {
           title="Abrir repositorio en GitHub"
         >
           <i class="ri-github-fill text-sm"></i>
-          <span>Repo</span>
+          <span>Código</span>
         </a>
       </div>
     `;
   } else if (type === 'lab') {
     typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-        <i class="ri-flask-line text-emerald-600"></i> Guía Lab
+      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
+        <i class="ri-flask-line text-emerald-600 text-xs"></i> Guía Lab
       </span>
+    `;
+
+    mediaPreviewHtml = `
+      <div class="p-3 mb-3 bg-gradient-to-r from-emerald-50/70 via-emerald-50/40 to-teal-50/30 rounded-xl border border-emerald-200/60 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold shadow-xs">
+            <i class="ri-flask-line text-base"></i>
+          </div>
+          <div>
+            <span class="text-[11px] font-bold text-slate-800 block">Guía Práctica UTP</span>
+            <span class="text-[10px] text-slate-500 font-medium">${item.fileFormat} • ${item.fileSize}</span>
+          </div>
+        </div>
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-white text-emerald-700 border border-emerald-200 shadow-2xs">
+          <i class="ri-shield-check-fill text-emerald-600"></i> Práctica Real
+        </span>
+      </div>
     `;
 
     ctaButtonsHtml = `
@@ -119,17 +153,35 @@ function createResourceCardHtml(item) {
       </button>
     `;
   } else {
+    cardClass = 'edu-card edu-card-pdf flex flex-col justify-between overflow-hidden group';
     typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-brand-700 border border-blue-200">
-        <i class="ri-file-text-line text-brand-600"></i> Solucionario / PDF
+      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-blue-50 text-brand-700 border border-blue-200 shadow-2xs">
+        <i class="ri-file-text-line text-brand-600 text-xs"></i> Solucionario PDF
       </span>
+    `;
+
+    mediaPreviewHtml = `
+      <div class="p-3 mb-3 bg-gradient-to-r from-blue-50/80 via-blue-50/40 to-indigo-50/30 rounded-xl border border-blue-200/60 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold shadow-xs">
+            <i class="ri-file-pdf-2-line text-base"></i>
+          </div>
+          <div>
+            <span class="text-[11px] font-bold text-slate-800 block">Documento Resuelto</span>
+            <span class="text-[10px] text-slate-500 font-medium">${item.fileFormat} • ${item.fileSize}</span>
+          </div>
+        </div>
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-white text-brand-700 border border-blue-200 shadow-2xs">
+          <i class="ri-checkbox-circle-fill text-brand-600"></i> Verificado
+        </span>
+      </div>
     `;
 
     ctaButtonsHtml = `
       <button 
         onclick="handleDownloadResource(${item.id}, '${item.title.replace(/'/g, "\\'")}', '${item.fileSize}')"
         class="btn-primary text-xs shrink-0"
-        title="Descargar documento académico"
+        title="Descargar documento académico oficial"
       >
         <i class="ri-download-2-line"></i>
         <span>Descargar</span>
@@ -137,15 +189,15 @@ function createResourceCardHtml(item) {
     `;
   }
 
-  const tagsHtml = (item.tags || []).map(t => `<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-500">#${t}</span>`).join(' ');
+  const tagsHtml = (item.tags || []).map(t => `<span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200/50">#${t}</span>`).join(' ');
 
   return `
-    <article class="edu-card flex flex-col justify-between overflow-hidden">
+    <article class="${cardClass}">
       <div class="p-5">
         <div class="flex items-center justify-between gap-2 mb-3">
           <span class="badge-course">
             <i class="ri-book-open-line text-brand-600"></i>
-            <span class="truncate max-w-[170px]">${item.course}</span>
+            <span class="truncate max-w-[160px]">${item.course}</span>
           </span>
           <div class="flex items-center gap-1.5">
             ${typeBadgeHtml}
@@ -155,7 +207,7 @@ function createResourceCardHtml(item) {
 
         ${mediaPreviewHtml}
 
-        <h3 class="text-base font-bold text-slate-900 hover:text-brand-600 transition-colors leading-snug line-clamp-2 cursor-pointer" onclick="openMediaModal(${item.id})">
+        <h3 class="text-base font-bold text-slate-900 group-hover:text-brand-600 transition-colors leading-snug line-clamp-2 cursor-pointer" onclick="openMediaModal(${item.id})">
           ${item.title}
         </h3>
 
@@ -167,18 +219,18 @@ function createResourceCardHtml(item) {
           ${tagsHtml}
         </div>
 
-        <div class="mt-3.5 flex items-center justify-between text-[11px] text-slate-400 font-medium">
+        <div class="mt-3.5 flex items-center justify-between text-[11px] text-slate-400 font-medium pt-2 border-t border-slate-100">
           <span class="inline-flex items-center gap-1.5 text-slate-600 font-semibold bg-slate-100 px-2 py-0.5 rounded">
             <i class="ri-attachment-line"></i>
             ${item.fileFormat} • ${item.fileSize}
           </span>
-          <span>${item.date}</span>
+          <span class="flex items-center gap-1"><i class="ri-download-cloud-line text-slate-400"></i> ${item.downloadsCount}</span>
         </div>
       </div>
 
-      <div class="px-5 py-3.5 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between gap-3 mt-auto">
+      <div class="px-5 py-3.5 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between gap-3 mt-auto">
         <div class="flex items-center gap-2.5 min-w-0">
-          <img src="${item.authorAvatar}" alt="${item.authorName}" class="w-8 h-8 rounded-full object-cover ring-1 ring-slate-200 shrink-0">
+          <img src="${item.authorAvatar}" alt="${item.authorName}" class="w-8 h-8 rounded-full object-cover ring-2 ring-slate-200/80 shrink-0">
           <div class="min-w-0">
             <p class="text-xs font-bold text-slate-800 truncate">${item.authorName}</p>
             <div class="flex items-center gap-1 mt-0.5">
@@ -193,6 +245,7 @@ function createResourceCardHtml(item) {
       </div>
     </article>
   `;
+}
 }
 
 // Renderizar tarjeta de Tutor Experto

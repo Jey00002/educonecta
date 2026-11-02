@@ -213,41 +213,47 @@
     <!-- ====================================================== -->
     <div id="view-inicio" class="app-view">
       
-      <!-- SECCIÓN HERO -->
-      <section class="hero-academic-bg py-14 sm:py-20">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <!-- SECCIÓN HERO ESTUDIO (CRAFT DESIGN) -->
+      <section class="hero-academic-bg py-16 sm:py-24">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 mb-5 shadow-xs">
-            <span class="w-2 h-2 rounded-full bg-brand-600"></span>
-            Comunidad Universitaria Abierta • Recursos Validados por Pares
+          <!-- Badge Live Pulse -->
+          <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/5 backdrop-blur-md border border-slate-900/10 text-xs font-semibold text-slate-800 mb-6 shadow-xs">
+            <span class="pulse-beacon"></span>
+            <span>Hub de Inteligencia Colectiva UTP</span>
+            <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+            <span class="text-brand-600 font-bold">19 Recursos Verificados</span>
           </div>
 
-          <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight max-w-3xl mx-auto">
-            Encuentra el conocimiento que <span class="text-brand-600">necesitas</span>
+          <!-- Titular Principal con Gradiente Textual -->
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.14] max-w-4xl mx-auto">
+            Domina tu carrera con <span class="bg-gradient-to-r from-brand-600 via-indigo-600 to-sky-600 bg-clip-text text-transparent">código real</span>, solucionarios y video clases.
           </h1>
 
-          <p class="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-            Accede a apuntes detallados, exámenes resueltos, guías de laboratorio y código fuente compartido por estudiantes destacados.
+          <!-- Subtítulo refinado -->
+          <p class="mt-5 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed">
+            Plataforma universitaria creada para compartir conocimiento sin barreras: repositorios de GitHub con código funcional, solucionarios PDF revisados y clases magistrales de YouTube.
           </p>
 
-          <!-- CAJA DE BÚSQUEDA CENTRAL Y FILTROS -->
-          <div class="search-wrapper mt-8 p-3 sm:p-4 text-left max-w-4xl mx-auto">
+          <!-- CAJA DE BÚSQUEDA SPOTLIGHT / COMMAND PALETTE -->
+          <div class="search-wrapper mt-9 p-3 sm:p-5 text-left max-w-4xl mx-auto ring-1 ring-slate-900/5 shadow-2xl">
             
-            <!-- Input Principal -->
-            <div class="relative mb-3">
+            <!-- Input Principal estilo Spotlight -->
+            <div class="relative mb-3.5">
               <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                <i class="ri-search-2-line text-lg text-brand-600"></i>
+                <i class="ri-search-2-line text-xl text-brand-600"></i>
               </div>
               <input 
                 type="text" 
                 id="homeSearchInput"
                 placeholder="Busca por curso, tema o concepto clave (ej. Algoritmos, Integrales, Linux, SQL)..." 
-                class="w-full pl-11 pr-28 py-3 bg-slate-50 rounded-xl text-slate-900 placeholder-slate-400 font-medium text-sm sm:text-base border border-slate-200 focus:bg-white focus:border-brand-600 outline-none transition"
+                class="w-full pl-12 pr-32 py-3.5 bg-slate-50/80 rounded-xl text-slate-900 placeholder-slate-400 font-medium text-sm sm:text-base border border-slate-200/90 focus:bg-white focus:border-brand-600 outline-none transition"
               >
-              <div class="absolute inset-y-0 right-1.5 flex items-center pr-1">
+              <div class="absolute inset-y-0 right-1.5 flex items-center gap-1.5 pr-1">
+                <kbd class="hidden sm:inline-flex items-center px-2 py-1 text-[10px] font-mono font-bold bg-white border border-slate-200 rounded text-slate-400 shadow-2xs">⌘K</kbd>
                 <button 
                   onclick="filterHomeResources()" 
-                  class="btn-primary text-xs py-2 px-4"
+                  class="btn-primary text-xs py-2.5 px-4 font-bold"
                 >
                   <span>Buscar</span>
                   <i class="ri-arrow-right-line"></i>
@@ -255,16 +261,16 @@
               </div>
             </div>
 
-            <!-- Filtros Solicitados: Curso, Ciclo, Tema -->
+            <!-- Filtros Contextuales con Iconos -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
               
               <!-- Filtro Curso -->
               <div>
                 <label for="homeCourseFilter" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1 flex items-center gap-1">
-                  <i class="ri-book-open-line text-brand-600"></i> Curso
+                  <i class="ri-book-open-line text-brand-600"></i> Materia Académica
                 </label>
                 <div class="relative">
-                  <select id="homeCourseFilter" onchange="filterHomeResources()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-700 font-medium focus:bg-white focus:border-brand-600 outline-none cursor-pointer pr-8">
+                  <select id="homeCourseFilter" onchange="filterHomeResources()" class="w-full appearance-none bg-slate-50/80 border border-slate-200/90 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-700 font-medium focus:bg-white focus:border-brand-600 outline-none cursor-pointer pr-8">
                     <option value="todos">Todos los cursos</option>
                     <option value="Algoritmos y Estructura de Datos">Algoritmos y Estructura de Datos</option>
                     <option value="Cálculo y Física Aplicada">Cálculo y Física Aplicada</option>
@@ -285,7 +291,7 @@
                   <i class="ri-stack-line text-brand-600"></i> Ciclo Académico
                 </label>
                 <div class="relative">
-                  <select id="homeCycleFilter" onchange="filterHomeResources()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-700 font-medium focus:bg-white focus:border-brand-600 outline-none cursor-pointer pr-8">
+                  <select id="homeCycleFilter" onchange="filterHomeResources()" class="w-full appearance-none bg-slate-50/80 border border-slate-200/90 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-700 font-medium focus:bg-white focus:border-brand-600 outline-none cursor-pointer pr-8">
                     <option value="todos">Todos los ciclos</option>
                     <option value="Ciclo I">Ciclo I</option>
                     <option value="Ciclo II">Ciclo II</option>
@@ -307,7 +313,7 @@
                   <i class="ri-price-tag-3-line text-brand-600"></i> Tipo de Material
                 </label>
                 <div class="relative">
-                  <select id="homeTopicFilter" onchange="filterHomeResources()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-700 font-medium focus:bg-white focus:border-brand-600 outline-none cursor-pointer pr-8">
+                  <select id="homeTopicFilter" onchange="filterHomeResources()" class="w-full appearance-none bg-slate-50/80 border border-slate-200/90 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-700 font-medium focus:bg-white focus:border-brand-600 outline-none cursor-pointer pr-8">
                     <option value="todos">Cualquier tipo</option>
                     <option value="Exámenes y Prácticas">Exámenes y Prácticas</option>
                     <option value="Guías de Laboratorio">Guías de Laboratorio</option>
@@ -322,28 +328,48 @@
 
             </div>
 
-            <!-- Chips de Búsqueda Rápida -->
+            <!-- Chips de Búsqueda Rápida (Pills de Vidrio) -->
             <div class="mt-3.5 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs">
               <span class="text-slate-400 font-medium flex items-center gap-1">
-                <i class="ri-fire-line text-brand-600"></i> Frecuentes:
+                <i class="ri-fire-line text-amber-500"></i> Tendencias:
               </span>
-              <button onclick="applyQuickTag('Grafos')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-brand-50 hover:text-brand-600 text-slate-600 font-medium transition">
+              <button onclick="applyQuickTag('Grafos')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-brand-50 hover:text-brand-600 text-slate-700 font-semibold border border-slate-200/60 transition shadow-2xs">
                 #Grafos
               </button>
-              <button onclick="applyQuickTag('Cálculo')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-brand-50 hover:text-brand-600 text-slate-600 font-medium transition">
+              <button onclick="applyQuickTag('Cálculo')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-brand-50 hover:text-brand-600 text-slate-700 font-semibold border border-slate-200/60 transition shadow-2xs">
                 #Cálculo Multivariable
               </button>
-              <button onclick="applyQuickTag('Linux')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-brand-50 hover:text-brand-600 text-slate-600 font-medium transition">
+              <button onclick="applyQuickTag('Linux')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-brand-50 hover:text-brand-600 text-slate-700 font-semibold border border-slate-200/60 transition shadow-2xs">
                 #Linux Concurrencia
               </button>
-              <button onclick="applyQuickTag('SQL')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-brand-50 hover:text-brand-600 text-slate-600 font-medium transition">
+              <button onclick="applyQuickTag('SQL')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-brand-50 hover:text-brand-600 text-slate-700 font-semibold border border-slate-200/60 transition shadow-2xs">
                 #PostgreSQL
               </button>
-              <button onclick="resetAllHomeFilters()" class="ml-auto text-brand-600 hover:text-brand-800 font-semibold text-xs underline">
-                Restablecer filtros
+              <button onclick="resetAllHomeFilters()" class="ml-auto text-brand-600 hover:text-brand-800 font-bold text-xs flex items-center gap-1 hover:underline">
+                <i class="ri-refresh-line"></i> Restablecer filtros
               </button>
             </div>
 
+          </div>
+
+          <!-- Tira de Métricas y Credibilidad Académica -->
+          <div class="mt-8 pt-6 flex flex-wrap items-center justify-center gap-6 sm:gap-12 text-slate-500 text-xs sm:text-sm">
+            <div class="flex items-center gap-2 font-medium">
+              <span class="w-2 h-2 rounded-full bg-brand-600"></span>
+              <span class="font-bold text-slate-900">19</span> Materiales Curados
+            </div>
+            <div class="flex items-center gap-2 font-medium">
+              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              <span class="font-bold text-slate-900">4</span> Formatos Multimodales
+            </div>
+            <div class="flex items-center gap-2 font-medium">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="font-bold text-slate-900">100%</span> Código y PDFs Reales
+            </div>
+            <div class="flex items-center gap-2 font-medium">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              <span class="font-bold text-slate-900">4.9 ★</span> Valoración Media
+            </div>
           </div>
 
         </div>

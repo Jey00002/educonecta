@@ -377,9 +377,18 @@ function closeMediaModal() {
   if (modal) modal.classList.add('hidden');
 }
 
-function copyCloneCommand(cmd) {
+function copyCloneCommand(cmd, btnEl) {
   navigator.clipboard.writeText(cmd).then(() => {
     showToastNotification('Comando Copiado', `${cmd}`);
+    if (btnEl) {
+      const origHtml = btnEl.innerHTML;
+      btnEl.innerHTML = '<i class="ri-check-line text-emerald-400"></i>';
+      btnEl.classList.add('scale-110');
+      setTimeout(() => {
+        btnEl.innerHTML = origHtml;
+        btnEl.classList.remove('scale-110');
+      }, 1800);
+    }
   }).catch(() => {
     prompt('Copia el comando git clone:', cmd);
   });
