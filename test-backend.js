@@ -32,7 +32,7 @@ async function runTests() {
   if (health.status !== 200) throw new Error('Health falló');
 
   // 1.1 Auth Login
-  const loginPayload = JSON.stringify({ identifier: 'valeria.mendoza@utp.edu.pe', password: 'utp12345' });
+  const loginPayload = JSON.stringify({ identifier: 'valeria.mendoza@educonecta.edu', password: 'demo12345' });
   const loginRes = await testEndpoint('Login', '/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(loginPayload) },
@@ -102,7 +102,7 @@ async function runTests() {
   // 9. Book Mentoring session
   const bookPayload = JSON.stringify({
     studentName: 'Juan Pérez',
-    studentEmail: 'juan.perez@utp.edu.pe',
+    studentEmail: 'juan.perez@educonecta.edu',
     topic: 'Consulta sobre grafos y matrices',
     date: '2026-11-05',
     time: '19:00'

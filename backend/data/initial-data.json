@@ -8,7 +8,7 @@
       "cycle": "Ciclo IV",
       "category": "Apuntes y Resúmenes",
       "authorName": "Diego Valenzuela",
-      "authorRole": "Tutor Par UTP - CC",
+      "authorRole": "Tutor Par Certificado",
       "authorAvatar": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=140",
       "rating": 4.9,
       "reviewsCount": 184,
@@ -118,7 +118,7 @@
       "cycle": "Ciclo V",
       "category": "Proyectos y Código",
       "authorName": "Diego Valenzuela",
-      "authorRole": "Tutor Par UTP",
+      "authorRole": "Tutor Par",
       "authorAvatar": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=140",
       "rating": 4.9,
       "reviewsCount": 92,
@@ -628,7 +628,7 @@
   "users": [
     {
       "id": 1,
-      "email": "valeria.mendoza@utp.edu.pe",
+      "email": "valeria.mendoza@educonecta.edu",
       "studentCode": "U20210042",
       "passwordHash": "$2b$10$ZPF9Gfjqdn9PXKyj54WYU.91J49is9OaQ3dZWr/ikuVu9wylkv.8q",
       "name": "Valeria Mendoza",
@@ -644,7 +644,7 @@
     },
     {
       "id": 2,
-      "email": "diego.valenzuela@utp.edu.pe",
+      "email": "diego.valenzuela@educonecta.edu",
       "studentCode": "U20191583",
       "passwordHash": "$2b$10$ZPF9Gfjqdn9PXKyj54WYU.91J49is9OaQ3dZWr/ikuVu9wylkv.8q",
       "name": "Diego Valenzuela",
@@ -660,7 +660,7 @@
     },
     {
       "id": 3,
-      "email": "camila.navarro@utp.edu.pe",
+      "email": "camila.navarro@educonecta.edu",
       "studentCode": "U20202190",
       "passwordHash": "$2b$10$ZPF9Gfjqdn9PXKyj54WYU.91J49is9OaQ3dZWr/ikuVu9wylkv.8q",
       "name": "Camila Navarro",

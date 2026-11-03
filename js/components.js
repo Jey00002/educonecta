@@ -22,221 +22,143 @@ function renderStarRating(rating) {
   return html;
 }
 
-// Renderizar tarjeta de recurso académico multiformato
-function createResourceCardHtml(item) {
+// Helper para obtener iniciales del autor
+function getInitials(name) {
+  if (!name) return 'UT';
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+// Helper para color de banner superior (Figma Figura 14)
+function getResourceBannerClass(item) {
   const type = item.resourceType || 'pdf';
+  if (type === 'video') return 'card-header-red';
+  if (type === 'repo') return 'card-header-blue';
+  if (item.category === 'Guías de Laboratorio' || type === 'lab') return 'card-header-teal';
+  if (item.category === 'Exámenes y Prácticas') return 'card-header-amber';
+  if (item.category === 'Proyectos y Código') return 'card-header-purple';
+  const colors = ['card-header-red', 'card-header-blue', 'card-header-purple', 'card-header-teal', 'card-header-amber', 'card-header-green'];
+  return colors[(item.id || 0) % colors.length];
+}
 
-  let typeBadgeHtml = '';
-  let mediaPreviewHtml = '';
-  let ctaButtonsHtml = '';
-  let cardClass = 'edu-card flex flex-col justify-between overflow-hidden';
+// Helper para etiqueta de categoría (Figma Figura 14)
+function getResourceCategoryLabel(item) {
+  const type = item.resourceType || 'pdf';
+  if (type === 'video') return 'VIDEO CLASE';
+  if (type === 'repo') return 'CÓDIGO';
+  if (type === 'lab') return 'LABORATORIO';
+  if (item.category === 'Apuntes y Resúmenes') return 'APUNTES';
+  if (item.category === 'Exámenes y Prácticas') return 'EXAMEN';
+  if (item.category === 'Guías de Laboratorio') return 'GUÍA LAB';
+  return 'GUÍA';
+}
 
-  if (type === 'video') {
-    cardClass = 'edu-card edu-card-video flex flex-col justify-between overflow-hidden';
-    typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
-        <i class="ri-youtube-line text-rose-600"></i> Video Clase
-      </span>
-    `;
+// Helper para icono central (Figma Figura 14)
+function getResourceCenterIcon(item) {
+  const type = item.resourceType || 'pdf';
+  if (type === 'video') return '<i class="ri-play-circle-line text-3xl text-white"></i>';
+  if (type === 'repo') return '<i class="ri-git-branch-line text-3xl text-white"></i>';
+  if (type === 'lab') return '<i class="ri-flask-line text-3xl text-white"></i>';
+  return '<i class="ri-file-text-line text-3xl text-white"></i>';
+}
 
-    mediaPreviewHtml = `
-      <div class="relative rounded-lg overflow-hidden mb-3 aspect-video bg-slate-900 group cursor-pointer" onclick="openMediaModal(${item.id})">
-        <img src="${item.thumbnailUrl || 'https://images.unsplash.com/photo-1516116211227-bbc13c749013?auto=format&fit=crop&q=80&w=600'}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-102 transition duration-200">
-        <div class="absolute inset-0 bg-slate-950/40 flex items-center justify-center">
-          <div class="w-10 h-10 rounded-full bg-rose-600 text-white flex items-center justify-center shadow">
-            <i class="ri-play-fill text-lg ml-0.5"></i>
-          </div>
-        </div>
-        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-black/80 text-white flex items-center gap-1">
-          <i class="ri-time-line text-[10px]"></i> ${item.fileSize}
-        </span>
-      </div>
-    `;
+// Alternar favorito de un recurso
+function toggleFavorite(btn, id) {
+  const icon = btn.querySelector('i');
+  if (icon) {
+    if (icon.classList.contains('ri-heart-line')) {
+      icon.classList.remove('ri-heart-line');
+      icon.classList.add('ri-heart-fill', 'text-rose-400');
+      showToastNotification('Guardado en favoritos', 'Recurso añadido a tu colección de estudio.');
+    } else {
+      icon.classList.remove('ri-heart-fill', 'text-rose-400');
+      icon.classList.add('ri-heart-line');
+      showToastNotification('Eliminado de favoritos', 'Recurso quitado de tu colección.');
+    }
+  }
+}
 
-    ctaButtonsHtml = `
-      <button 
-        onclick="openMediaModal(${item.id})"
-        class="btn-primary text-xs shrink-0"
-        title="Ver video clase"
-      >
-        <i class="ri-play-circle-line text-sm"></i>
-        <span>Ver Clase</span>
-      </button>
-    `;
-  } else if (type === 'repo') {
-    cardClass = 'edu-card edu-card-repo flex flex-col justify-between overflow-hidden';
-    typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-800 border border-slate-200">
-        <i class="ri-git-branch-line"></i> Repositorio
-      </span>
-    `;
+// Abrir sala de comunidad
+function openCommunityRoom(id) {
+  const comm = (window.academicCommunities || []).find(c => c.id === id);
+  showToastNotification(`Comunidad: ${comm ? comm.name : 'EduConecta'}`, `Conectando con la sala de debate y recursos compartidos.`);
+}
 
-    mediaPreviewHtml = `
-      <div class="terminal-window mb-3">
-        <div class="terminal-header">
-          <span class="font-mono text-[11px] text-slate-300 font-medium">${item.language || 'git-repo'}</span>
-          <span class="flex items-center gap-1 font-mono text-[10px] text-slate-300">
-            <i class="ri-star-line text-[11px]"></i> ${item.stars || 148}
+// Renderizar tarjeta de recurso académico (Figma Figura 14)
+function createResourceCardHtml(item) {
+  const bannerClass = getResourceBannerClass(item);
+  const categoryTag = getResourceCategoryLabel(item);
+  const centerIcon = getResourceCenterIcon(item);
+  const initials = getInitials(item.authorName);
+
+  return `
+    <article class="figma-resource-card">
+      <!-- Header Banner Figma con Categoría, Icono e Icono de Guardar -->
+      <div class="card-header-banner ${bannerClass}">
+        <div class="absolute top-3 left-3">
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-white/20 backdrop-blur-sm text-white border border-white/20">
+            ${categoryTag}
           </span>
         </div>
-        <div class="terminal-body flex items-center justify-between py-2 px-3 bg-[#090d14]">
-          <code class="text-[11px] text-emerald-400 font-mono truncate max-w-[210px] select-all">$ ${item.cloneCommand || 'git clone ' + item.githubUrl}</code>
-          <button 
-            onclick="copyCloneCommand('${item.cloneCommand || 'git clone ' + item.githubUrl}', this)" 
-            class="text-slate-400 hover:text-white p-1 rounded transition text-xs focus:outline-none" 
-            title="Copiar comando git clone"
-          >
-            <i class="ri-file-copy-line"></i>
+
+        <div class="flex items-center justify-center cursor-pointer group" onclick="openMediaModal(${item.id})">
+          <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+            ${centerIcon}
+          </div>
+        </div>
+
+        <div class="absolute top-3 right-3">
+          <button onclick="toggleFavorite(this, ${item.id})" class="w-7 h-7 rounded-full bg-black/20 hover:bg-black/40 text-white/90 hover:text-white flex items-center justify-center transition" title="Guardar en favoritos">
+            <i class="ri-heart-line text-sm"></i>
           </button>
         </div>
       </div>
-    `;
 
-    ctaButtonsHtml = `
-      <div class="flex items-center gap-1.5 shrink-0">
-        <button 
-          onclick="copyCloneCommand('${item.cloneCommand || 'git clone ' + item.githubUrl}', this)"
-          class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition"
-          title="Copiar comando git clone"
-        >
-          <i class="ri-file-copy-line"></i>
-        </button>
-        <a 
-          href="${item.githubUrl || 'https://github.com'}" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="btn-primary text-xs"
-          title="Abrir repositorio en GitHub"
-        >
-          <i class="ri-github-line text-sm"></i>
-          <span>Código</span>
-        </a>
-      </div>
-    `;
-  } else if (type === 'lab') {
-    typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
-        <i class="ri-flask-line text-emerald-600"></i> Guía Lab
-      </span>
-    `;
-
-    mediaPreviewHtml = `
-      <div class="p-3 mb-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded bg-emerald-600 text-white flex items-center justify-center font-bold">
-            <i class="ri-flask-line text-base"></i>
+      <!-- Cuerpo de la Tarjeta Figma -->
+      <div class="p-4 flex-1 flex flex-col justify-between">
+        <div>
+          <!-- Pills de Curso y Ciclo -->
+          <div class="flex items-center gap-1.5 flex-wrap mb-2">
+            <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-red-50 text-red-700">
+              ${item.course}
+            </span>
+            <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-600">
+              ${item.cycle}
+            </span>
           </div>
-          <div>
-            <span class="text-xs font-semibold text-slate-800 block">Guía de Laboratorio</span>
-            <span class="text-[11px] text-slate-500">${item.fileFormat} • ${item.fileSize}</span>
-          </div>
-        </div>
-        <span class="text-[10px] font-medium text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded">
-          Verificado
-        </span>
-      </div>
-    `;
 
-    ctaButtonsHtml = `
-      <button 
-        onclick="handleDownloadResource(${item.id}, '${item.title.replace(/'/g, "\\'")}', '${item.fileSize}')"
-        class="btn-primary text-xs shrink-0"
-        title="Descargar guía de laboratorio"
-      >
-        <i class="ri-download-2-line"></i>
-        <span>Descargar</span>
-      </button>
-    `;
-  } else {
-    cardClass = 'edu-card edu-card-pdf flex flex-col justify-between overflow-hidden';
-    typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-brand-700 border border-blue-200">
-        <i class="ri-file-text-line text-brand-600"></i> Solucionario
-      </span>
-    `;
+          <!-- Título y Descripción -->
+          <h3 class="text-sm font-bold text-slate-900 leading-snug line-clamp-2 hover:text-red-600 transition cursor-pointer" onclick="openMediaModal(${item.id})">
+            ${item.title}
+          </h3>
 
-    mediaPreviewHtml = `
-      <div class="p-3 mb-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded bg-brand-600 text-white flex items-center justify-center font-bold">
-            <i class="ri-file-pdf-2-line text-base"></i>
-          </div>
-          <div>
-            <span class="text-xs font-semibold text-slate-800 block">Documento de Estudio</span>
-            <span class="text-[11px] text-slate-500">${item.fileFormat} • ${item.fileSize}</span>
-          </div>
-        </div>
-        <span class="text-[10px] font-medium text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded">
-          Verificado
-        </span>
-      </div>
-    `;
+          <p class="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
+            ${item.description}
+          </p>
 
-    ctaButtonsHtml = `
-      <button 
-        onclick="handleDownloadResource(${item.id}, '${item.title.replace(/'/g, "\\'")}', '${item.fileSize}')"
-        class="btn-primary text-xs shrink-0"
-        title="Descargar documento académico"
-      >
-        <i class="ri-download-2-line"></i>
-        <span>Descargar</span>
-      </button>
-    `;
-  }
-
-  const tagsHtml = (item.tags || []).map(t => `<span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200/50">#${t}</span>`).join(' ');
-
-  return `
-    <article class="${cardClass}">
-      <div class="p-5">
-        <div class="flex items-center justify-between gap-2 mb-3">
-          <span class="badge-course">
-            <i class="ri-book-open-line text-brand-600"></i>
-            <span class="truncate max-w-[160px]">${item.course}</span>
-          </span>
-          <div class="flex items-center gap-1.5">
-            ${typeBadgeHtml}
-            <span class="badge-cycle">${item.cycle}</span>
-          </div>
-        </div>
-
-        ${mediaPreviewHtml}
-
-        <h3 class="text-base font-bold text-slate-900 group-hover:text-brand-600 transition-colors leading-snug line-clamp-2 cursor-pointer" onclick="openMediaModal(${item.id})">
-          ${item.title}
-        </h3>
-
-        <p class="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">
-          ${item.description}
-        </p>
-
-        <div class="mt-3 flex flex-wrap items-center gap-1.5">
-          ${tagsHtml}
-        </div>
-
-        <div class="mt-3.5 flex items-center justify-between text-[11px] text-slate-400 font-medium pt-2 border-t border-slate-100">
-          <span class="inline-flex items-center gap-1.5 text-slate-600 font-semibold bg-slate-100 px-2 py-0.5 rounded">
-            <i class="ri-attachment-line"></i>
-            ${item.fileFormat} • ${(item.fileSize || '').replace(/⭐|★/g, 'stars').trim()}
-          </span>
-          <span class="flex items-center gap-1"><i class="ri-download-cloud-line text-slate-400"></i> ${item.downloadsCount}</span>
-        </div>
-      </div>
-
-      <div class="px-5 py-3.5 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between gap-3 mt-auto">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <img src="${item.authorAvatar}" alt="${item.authorName}" class="w-8 h-8 rounded-full object-cover ring-2 ring-slate-200/80 shrink-0">
-          <div class="min-w-0">
-            <p class="text-xs font-bold text-slate-800 truncate">${item.authorName}</p>
-            <div class="flex items-center gap-1 mt-0.5">
-              <div class="flex items-center gap-0.5">${renderStarRating(item.rating)}</div>
-              <span class="text-[11px] font-bold text-slate-700 ml-1">${item.rating.toFixed(1)}</span>
-              <span class="text-[10px] text-slate-400">(${item.reviewsCount})</span>
+          <!-- Autor con Iniciales circulares (Figma) -->
+          <div class="mt-3 flex items-center gap-2">
+            <div class="w-6 h-6 rounded-full bg-red-100 text-red-700 font-bold text-[10px] flex items-center justify-center shrink-0">
+              ${initials}
             </div>
+            <span class="text-xs font-medium text-slate-700 truncate">${item.authorName}</span>
           </div>
         </div>
 
-        ${ctaButtonsHtml}
+        <!-- Footer con Calificación, Descargas y Enlace 'Ver recurso >' -->
+        <div class="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="text-slate-500 font-medium flex items-center gap-1">
+            <i class="ri-star-fill text-amber-400 text-xs"></i>
+            <strong class="text-slate-700 font-semibold">${item.rating.toFixed(1)}</strong>
+            <span>· ${item.downloadsCount} descargas</span>
+          </span>
+
+          <button onclick="openMediaModal(${item.id})" class="text-xs font-semibold text-red-600 hover:text-red-700 flex items-center gap-0.5 group">
+            <span>Ver recurso</span>
+            <i class="ri-arrow-right-s-line text-sm group-hover:translate-x-0.5 transition-transform"></i>
+          </button>
+        </div>
       </div>
     </article>
   `;
@@ -289,41 +211,66 @@ function createExpertCardHtml(mentor) {
   `;
 }
 
-// Renderizar tarjeta de Comunidad
+// Renderizar tarjeta de Comunidad de Práctica (Figma Figura 16)
 function createCommunityCardHtml(community) {
-  return `
-    <div class="edu-card p-5 flex flex-col justify-between">
-      <div>
-        <div class="flex items-center justify-between gap-2 mb-2">
-          <span class="text-[10px] font-semibold uppercase tracking-wider text-brand-700 bg-brand-50 px-2 py-0.5 rounded border border-brand-200">
-            ${community.type}
-          </span>
-          <span class="text-[11px] font-medium text-slate-500">
-            ${community.onlineCount} activos
-          </span>
-        </div>
+  let bannerClass = 'card-header-red';
+  if (community.bannerColor === 'blue') bannerClass = 'card-header-blue';
+  else if (community.bannerColor === 'purple') bannerClass = 'card-header-purple';
+  else if (community.bannerColor === 'dark') bannerClass = 'card-header-dark';
 
-        <h3 class="text-base font-bold text-slate-900 mt-1">${community.name}</h3>
-        <p class="text-xs text-brand-700 font-medium mt-0.5">${community.faculty}</p>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed">${community.description}</p>
-        
-        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
-          <span class="flex items-center gap-1.5"><i class="ri-group-line text-slate-400"></i> ${community.members.toLocaleString()} miembros</span>
-          <span class="text-slate-600 font-medium">Sala activa</span>
+  return `
+    <div class="figma-cop-card">
+      <div class="cop-banner ${bannerClass}">
+        <div class="cop-badge-code">
+          ${community.code || 'EC'}
         </div>
+        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white backdrop-blur-sm border border-white/20">
+          ${community.type === 'Club Técnico' ? 'Club Técnico' : 'Comunidad Oficial'}
+        </span>
       </div>
 
-      <button 
-        onclick="toggleCommunityMembership(${community.id})" 
-        class="mt-4 w-full py-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-2 ${
-          community.isMember 
-            ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200' 
-            : 'btn-primary'
-        }"
-      >
-        <i class="${community.isMember ? 'ri-check-line text-slate-600' : 'ri-user-add-line'}"></i>
-        <span>${community.isMember ? 'Miembro activo' : 'Unirme a la comunidad'}</span>
-      </button>
+      <div class="p-5 flex-1 flex flex-col justify-between">
+        <div>
+          <h3 class="text-base font-bold text-slate-900">${community.name}</h3>
+          <p class="text-xs text-red-600 font-semibold mt-0.5">${community.faculty}</p>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed">${community.description}</p>
+
+          <!-- Clúster de miembros -->
+          <div class="mt-4 flex items-center gap-2">
+            <div class="flex -space-x-1.5 overflow-hidden">
+              <div class="inline-block h-6 w-6 rounded-full ring-2 ring-white bg-slate-800 text-white text-[9px] font-bold flex items-center justify-center">AM</div>
+              <div class="inline-block h-6 w-6 rounded-full ring-2 ring-white bg-red-600 text-white text-[9px] font-bold flex items-center justify-center">DV</div>
+              <div class="inline-block h-6 w-6 rounded-full ring-2 ring-white bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">CN</div>
+            </div>
+            <span class="text-xs text-slate-500 font-medium">+${community.members.toLocaleString()} miembros</span>
+          </div>
+
+          <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span><i class="ri-user-follow-line text-slate-400"></i> ${community.onlineCount} activos hoy</span>
+            <span><i class="ri-chat-3-line text-slate-400"></i> ${community.postsCount || 42} aportes</span>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 flex items-center gap-2">
+          <button 
+            onclick="toggleCommunityMembership(${community.id})" 
+            class="flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
+              community.isMember 
+                ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200' 
+                : 'bg-red-600 text-white hover:bg-red-700'
+            }"
+          >
+            <i class="${community.isMember ? 'ri-check-line text-emerald-600' : 'ri-user-add-line'}"></i>
+            <span>${community.isMember ? 'Miembro' : 'Unirme'}</span>
+          </button>
+          <button 
+            onclick="openCommunityRoom(${community.id})" 
+            class="py-2 px-3 rounded-lg text-xs font-semibold border border-slate-200 text-slate-700 hover:bg-slate-50 transition"
+          >
+            Explorar
+          </button>
+        </div>
+      </div>
     </div>
   `;
 }

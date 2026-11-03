@@ -12,7 +12,7 @@ const documents = [
     fileName: 'solucionario-algoritmos-grafos-dijkstra.pdf',
     title: 'Guía y Solucionario: Algoritmos de Grafos y Árboles AVL',
     course: 'Algoritmos y Estructura de Datos (Ciclo IV)',
-    author: 'Diego Valenzuela - Tutor Par UTP',
+    author: 'Diego Valenzuela - Tutor Par Certificado',
     sections: [
       {
         heading: '1. Fundamentos Teóricos de Grafos Ponderados',
@@ -140,7 +140,7 @@ function generatePDF(docData) {
         Title: docData.title,
         Author: docData.author,
         Subject: docData.course,
-        Keywords: 'UTP, EduConecta, Solucionario, Examen, Universidad'
+        Keywords: 'EduConecta, Solucionario, Examen, Universidad'
       }
     });
 
@@ -148,11 +148,11 @@ function generatePDF(docData) {
     doc.pipe(stream);
 
     // Barra superior decorativa institucional
-    doc.rect(0, 0, doc.page.width, 10).fill('#0056b3');
+    doc.rect(0, 0, doc.page.width, 10).fill('#dc2626');
 
     // Header institucional
-    doc.fontSize(10).font('Helvetica-Bold').fillColor('#0056b3').text('UNIVERSIDAD TECNOLÓGICA DEL PERÚ', 45, 25);
-    doc.fontSize(8).font('Helvetica').fillColor('#64748b').text('EduConecta - Repositorio Académico Verificado | Periodo 2026', 45, 38);
+    doc.fontSize(10).font('Helvetica-Bold').fillColor('#dc2626').text('EDUCONECTA PLATAFORMA UNIVERSITARIA', 45, 25);
+    doc.fontSize(8).font('Helvetica').fillColor('#64748b').text('Repositorio Académico Verificado | Periodo 2026', 45, 38);
 
     doc.moveTo(45, 52).lineTo(doc.page.width - 45, 52).strokeColor('#e2e8f0').stroke();
 
@@ -162,12 +162,12 @@ function generatePDF(docData) {
 
     // Meta datos del documento
     doc.moveDown(0.5);
-    doc.fontSize(9).font('Helvetica-Bold').fillColor('#0056b3').text(docData.course);
+    doc.fontSize(9).font('Helvetica-Bold').fillColor('#dc2626').text(docData.course);
     doc.fontSize(8).font('Helvetica').fillColor('#475569').text(`Aporte de: ${docData.author} | Revisión y Validación Estudiantil Aprobada`);
 
     doc.moveDown(1);
     doc.rect(45, doc.y, doc.page.width - 90, 22).fillAndStroke('#eff6ff', '#bfdbfe');
-    doc.fillColor('#004494').fontSize(8).font('Helvetica-Bold').text('  MATERIAL OFICIAL VERIFICADO • ACCESO LIBRE PARA ESTUDIANTES UTP', 50, doc.y - 16);
+    doc.fillColor('#004494').fontSize(8).font('Helvetica-Bold').text('  MATERIAL OFICIAL VERIFICADO • ACCESO LIBRE PARA ESTUDIANTES', 50, doc.y - 16);
 
     doc.moveDown(1.5);
 
@@ -185,7 +185,7 @@ function generatePDF(docData) {
     // Pie de página institucional
     const footerY = doc.page.height - 40;
     doc.moveTo(45, footerY - 5).lineTo(doc.page.width - 45, footerY - 5).strokeColor('#e2e8f0').stroke();
-    doc.fontSize(7).font('Helvetica').fillColor('#94a3b8').text('EduConecta UTP 2026 - Plataforma Universitaria Colaborativa. Documento generado para fines académicos.', 45, footerY, { align: 'center' });
+    doc.fontSize(7).font('Helvetica').fillColor('#94a3b8').text('EduConecta 2026 - Plataforma Universitaria Colaborativa. Documento generado para fines académicos.', 45, footerY, { align: 'center' });
 
     doc.end();
     stream.on('finish', () => {

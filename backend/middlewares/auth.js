@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const db = require('../data/database');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'educonecta-utp-secret-key-2026';
+const JWT_SECRET = process.env.JWT_SECRET || 'educonecta-secret-key-2026';
 
 function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;

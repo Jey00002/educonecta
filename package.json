@@ -1,5 +1,5 @@
 {
-  "name": "educonecta-utp",
+  "name": "educonecta",
   "version": "1.0.0",
   "description": "Backend y Plataforma de Gestión de Conocimiento Estudiantil EduConecta",
   "main": "server.js",
@@ -10,7 +10,7 @@
   },
   "keywords": [
     "educonecta",
-    "utp",
+    "educacion",
     "nodejs",
     "express",
     "rest-api"

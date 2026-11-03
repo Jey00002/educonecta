@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-50">
+<html lang="es" class="h-full bg-[#f8f9fb]">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EduConecta - Plataforma de Gestión de Conocimiento Estudiantil</title>
-  <meta name="description" content="Red académica universitaria para compartir apuntes, bancos de exámenes, laboratorios y tutorías entre pares.">
+  <meta name="description" content="Red académica universitaria para compartir apuntes, guías, solucionarios y tutorías entre pares.">
 
   <!-- Google Fonts: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,16 +19,16 @@
         extend: {
           colors: {
             brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              200: '#bfdbfe',
-              300: '#93c5fd',
-              400: '#60a5fa',
-              500: '#3b82f6',
-              600: '#0056b3', // Azul académico UTP
-              700: '#004494',
-              800: '#003370',
-              900: '#00224d'
+              50: '#fef2f2',
+              100: '#fee2e2',
+              200: '#fecaca',
+              300: '#fca5a5',
+              400: '#f87171',
+              500: '#ef4444',
+              600: '#dc2626', // Rojo EduConecta Oficial
+              700: '#b91c1c',
+              800: '#991b1b',
+              900: '#7f1d1d'
             }
           },
           fontFamily: {
@@ -39,1166 +39,808 @@
     }
   </script>
 
-  <!-- Librería de Iconos: Remix Icon (4.2.0) & Font Awesome (6.5.1) -->
+  <!-- Remix Icon (4.2.0) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <!-- Estilos del Sistema por Carpeta -->
+  <!-- Estilos Figma EduConecta -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="min-h-screen flex flex-col selection:bg-brand-100 selection:text-brand-900">
+<body class="min-h-screen bg-[#f8f9fb] text-slate-900 selection:bg-red-100 selection:text-red-900">
 
   <!-- ======================================================== -->
-  <!-- 1. ENCABEZADO / HEADER FLOTANTE PROFESIONAL              -->
+  <!-- 1. SIDEBAR LATERAL OSCURA (FIGMA FIGURA 13)               -->
   <!-- ======================================================== -->
-  <header class="app-header">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        
-        <!-- Logo y Versión -->
-        <div class="flex items-center gap-6">
-          <a href="#inicio" onclick="AppRouter.navigate('inicio'); return false;" class="flex items-center gap-2.5 group focus:outline-none">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform">
-              <i class="ri-graduation-cap-fill text-lg"></i>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-lg font-bold tracking-tight text-slate-900 group-hover:text-brand-600 transition-colors">
-                Edu<span class="text-brand-600">Conecta</span>
-              </span>
-            </div>
-          </a>
-
-          <!-- Barra de Búsqueda Rápida en Header (Desktop) -->
-          <button onclick="focusGlobalSearch()" class="hidden xl:flex header-search-trigger" title="Buscar en toda la plataforma">
-            <i class="ri-search-2-line text-sm text-slate-400"></i>
-            <span class="text-xs text-slate-500">Buscar cursos o materiales...</span>
-          </button>
-        </div>
-
-        <!-- Enlaces de navegación centrales (Escritorio) -->
-        <nav class="hidden md:flex items-center gap-1">
-          <button id="nav-link-inicio" onclick="AppRouter.navigate('inicio')" class="nav-link-btn active">
-            <i class="ri-home-4-line"></i>
-            <span>Inicio</span>
-          </button>
-          
-          <button id="nav-link-repositorio" onclick="AppRouter.navigate('repositorio')" class="nav-link-btn">
-            <i class="ri-folder-shared-line"></i>
-            <span>Repositorio</span>
-          </button>
-          
-          <button id="nav-link-mapa-expertos" onclick="AppRouter.navigate('mapa-expertos')" class="nav-link-btn">
-            <i class="ri-compass-3-line"></i>
-            <span>Mapa de Expertos</span>
-          </button>
-          
-          <button id="nav-link-comunidades" onclick="AppRouter.navigate('comunidades')" class="nav-link-btn">
-            <i class="ri-group-line"></i>
-            <span>Comunidades</span>
-          </button>
-        </nav>
-
-        <!-- Acciones a la Derecha: Notificaciones, Perfil y CTA -->
-        <div class="flex items-center gap-2.5">
-          
-          <!-- Notificaciones con Dropdown Popover -->
-          <div class="relative">
-            <button 
-              id="notificationTriggerBtn"
-              onclick="toggleNotificationDropdown()"
-              aria-label="Notificaciones" 
-              class="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors focus:outline-none"
-            >
-              <i class="ri-notification-3-line text-lg"></i>
-              <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-brand-600 ring-2 ring-white"></span>
-            </button>
-
-            <!-- Popover de Notificaciones -->
-            <div id="notificationPopover" class="dropdown-popover hidden">
-              <div class="p-3 border-b border-slate-100 flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-900">Notificaciones Académicas</span>
-                <span class="text-[10px] font-semibold text-brand-600 bg-brand-50 px-2 py-0.5 rounded">2 Nuevas</span>
-              </div>
-              <div class="divide-y divide-slate-100 text-xs">
-                <div class="p-3 hover:bg-slate-50 transition cursor-pointer" onclick="AppRouter.navigate('repositorio')">
-                  <div class="flex items-start gap-2.5">
-                    <i class="ri-file-text-line text-brand-600 text-sm mt-0.5 shrink-0"></i>
-                    <div>
-                      <p class="font-semibold text-slate-800">Nuevo Solucionario en Algoritmos</p>
-                      <p class="text-[11px] text-slate-400 mt-0.5">Diego V. subió material de Árboles AVL y Grafos.</p>
-                      <span class="text-[10px] text-slate-400 font-medium">Hace 15 min</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="p-3 hover:bg-slate-50 transition cursor-pointer" onclick="AppRouter.navigate('mapa-expertos')">
-                  <div class="flex items-start gap-2.5">
-                    <i class="ri-calendar-check-line text-emerald-600 text-sm mt-0.5 shrink-0"></i>
-                    <div>
-                      <p class="font-semibold text-slate-800">Asesoría Par Aceptada</p>
-                      <p class="text-[11px] text-slate-400 mt-0.5">Camila Navarro confirmó la sesión de Cálculo para el jueves.</p>
-                      <span class="text-[10px] text-slate-400 font-medium">Hace 2 horas</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="p-2 border-t border-slate-100 text-center bg-slate-50/50">
-                <button onclick="toggleNotificationDropdown(); showToastNotification('Bandeja al día', 'Todas las notificaciones fueron marcadas como leídas');" class="text-[11px] font-semibold text-brand-600 hover:underline">
-                  Marcar todas como leídas
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Contenedor Dinámico de Autenticación / Perfil (Desktop) -->
-          <div id="headerAuthContainer" class="relative">
-            <!-- Renderizado dinámicamente según sesión (login / avatar) -->
-          </div>
-
-          <!-- Botón de Aportar Recurso -->
-          <button onclick="openUploadModal()" class="btn-primary text-xs py-2 px-3 sm:px-4">
-            <i class="ri-upload-cloud-2-line text-sm"></i>
-            <span class="hidden sm:inline">Aportar Recurso</span>
-          </button>
-
-          <!-- Botón Menú Móvil -->
-          <div class="flex items-center md:hidden">
-            <button id="mobileMenuToggle" aria-label="Abrir menú" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none">
-              <i class="ri-menu-line text-xl"></i>
-            </button>
-          </div>
-
-        </div>
-
+  <aside class="figma-sidebar hidden md:flex">
+    <!-- Brand Header -->
+    <div class="p-5 border-b border-[#202328] flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-red-600 flex items-center justify-center text-white font-extrabold text-lg shadow-sm shrink-0">
+        E
+      </div>
+      <div class="min-w-0">
+        <h2 class="text-sm font-extrabold text-white tracking-tight truncate">EduConecta</h2>
+        <p class="text-[11px] text-slate-400 truncate">Conocimiento que conecta</p>
       </div>
     </div>
 
-    <!-- Menú Desplegable Móvil -->
-    <div id="mobileDrawer" class="hidden md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-1.5">
-      <button onclick="AppRouter.navigate('inicio'); document.getElementById('mobileDrawer').classList.add('hidden');" id="mobile-link-inicio" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-brand-600 bg-brand-50 flex items-center gap-2">
-        <i class="ri-home-4-line"></i> Inicio
-      </button>
-      <button onclick="AppRouter.navigate('repositorio'); document.getElementById('mobileDrawer').classList.add('hidden');" id="mobile-link-repositorio" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-        <i class="ri-folder-shared-line"></i> Repositorio
-      </button>
-      <button onclick="AppRouter.navigate('mapa-expertos'); document.getElementById('mobileDrawer').classList.add('hidden');" id="mobile-link-mapa-expertos" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-        <i class="ri-compass-3-line"></i> Mapa de Expertos
-      </button>
-      <button onclick="AppRouter.navigate('comunidades'); document.getElementById('mobileDrawer').classList.add('hidden');" id="mobile-link-comunidades" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-        <i class="ri-group-line"></i> Comunidades
-      </button>
+    <!-- Navegación Plataforma -->
+    <div class="flex-1 px-3 py-4 space-y-6 overflow-y-auto">
+      <div>
+        <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">Plataforma</p>
+        <nav class="space-y-1">
+          <button id="nav-link-inicio" onclick="AppRouter.navigate('inicio')" class="sidebar-nav-item w-full text-left active">
+            <span class="flex items-center gap-2.5">
+              <i class="ri-home-4-line text-base"></i>
+              <span>Inicio</span>
+            </span>
+          </button>
+          
+          <button onclick="AppRouter.navigate('repositorio'); focusGlobalSearch();" class="sidebar-nav-item w-full text-left">
+            <span class="flex items-center gap-2.5">
+              <i class="ri-search-2-line text-base"></i>
+              <span>Buscar conocimiento</span>
+            </span>
+          </button>
 
-      <div id="mobileAuthContainer" class="pt-2 border-t border-slate-100">
-        <!-- Renderizado dinámicamente -->
+          <button id="nav-link-repositorio" onclick="AppRouter.navigate('repositorio')" class="sidebar-nav-item w-full text-left">
+            <span class="flex items-center gap-2.5">
+              <i class="ri-folder-shared-line text-base"></i>
+              <span>Repositorio</span>
+            </span>
+          </button>
+
+          <button onclick="AppRouter.navigate('repositorio')" class="sidebar-nav-item w-full text-left">
+            <span class="flex items-center gap-2.5">
+              <i class="ri-book-open-line text-base"></i>
+              <span>Wiki de cursos</span>
+            </span>
+          </button>
+
+          <button id="nav-link-mapa-expertos" onclick="AppRouter.navigate('mapa-expertos')" class="sidebar-nav-item w-full text-left">
+            <span class="flex items-center gap-2.5">
+              <i class="ri-compass-3-line text-base"></i>
+              <span>Mapa de expertos</span>
+            </span>
+          </button>
+
+          <button id="nav-link-comunidades" onclick="AppRouter.navigate('comunidades')" class="sidebar-nav-item w-full text-left">
+            <span class="flex items-center gap-2.5">
+              <i class="ri-group-line text-base"></i>
+              <span>Comunidades</span>
+            </span>
+          </button>
+
+          <button onclick="AppRouter.navigate('comunidades')" class="sidebar-nav-item w-full text-left">
+            <span class="flex items-center gap-2.5">
+              <i class="ri-question-answer-line text-base"></i>
+              <span>Foro y dudas</span>
+            </span>
+            <span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-red-600 text-white">3</span>
+          </button>
+
+          <button id="nav-link-perfil" onclick="AppRouter.navigate('perfil')" class="sidebar-nav-item w-full text-left">
+            <span class="flex items-center gap-2.5">
+              <i class="ri-user-line text-base"></i>
+              <span>Mi perfil</span>
+            </span>
+          </button>
+        </nav>
       </div>
+    </div>
 
-      <div class="pt-2">
-        <button onclick="openUploadModal(); document.getElementById('mobileDrawer').classList.add('hidden');" class="btn-primary w-full">
-          <i class="ri-upload-cloud-line"></i> Subir Recurso
+    <!-- Mini Perfil del Estudiante en Sidebar (Alex Mendoza) -->
+    <div class="p-3 border-t border-[#202328] bg-[#0c0e10]">
+      <div onclick="AppRouter.navigate('perfil')" class="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#1a1c22] transition cursor-pointer">
+        <div class="w-8 h-8 rounded-full bg-amber-700 text-amber-100 font-bold text-xs flex items-center justify-center shrink-0">
+          AM
+        </div>
+        <div class="min-w-0 flex-1">
+          <p class="text-xs font-bold text-white truncate">Alex Mendoza</p>
+          <p class="text-[11px] text-slate-400 truncate">VI ciclo · Sistemas</p>
+        </div>
+        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">1,240</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- 2. TOPBAR SUPERIOR (FIGMA FIGURA 13)                     -->
+  <!-- ======================================================== -->
+  <header class="figma-topbar md:ml-[250px] px-4 sm:px-6 flex items-center justify-between">
+    <!-- Izquierda: Toggle móvil + Buscador Global con ⌘K -->
+    <div class="flex items-center gap-3 flex-1 max-w-xl">
+      <button id="mobileMenuToggle" aria-label="Abrir menú móvil" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none">
+        <i class="ri-menu-line text-xl"></i>
+      </button>
+
+      <div class="relative w-full max-w-md hidden sm:block">
+        <i class="ri-search-2-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+        <input 
+          type="text" 
+          id="topbarSearchInput"
+          onkeydown="if(event.key==='Enter'){ const val=this.value; const hi=document.getElementById('homeSearchInput'); if(hi){hi.value=val; filterHomeResources();} AppRouter.navigate('inicio'); }"
+          placeholder="Buscar recursos, cursos o temas..." 
+          class="w-full pl-9 pr-14 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:border-red-600 outline-none transition"
+        >
+        <span class="absolute right-2.5 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-400 bg-white border border-slate-200">⌘K</span>
+      </div>
+    </div>
+
+    <!-- Derecha: Notificaciones, Perfil y Botón Rojo '+ Subir recurso' -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Campana de Notificaciones -->
+      <div class="relative">
+        <button id="notificationTriggerBtn" onclick="toggleNotificationDropdown()" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition relative">
+          <i class="ri-notification-3-line text-lg"></i>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-600 ring-2 ring-white"></span>
         </button>
+
+        <!-- Popover Notificaciones -->
+        <div id="notificationPopover" class="dropdown-popover hidden">
+          <div class="p-3 border-b border-slate-100 flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-900">Notificaciones</span>
+            <span class="text-[10px] font-semibold text-red-600 bg-red-50 px-2 py-0.5 rounded">2 Nuevas</span>
+          </div>
+          <div class="divide-y divide-slate-100 text-xs">
+            <div class="p-3 hover:bg-slate-50 transition cursor-pointer" onclick="AppRouter.navigate('repositorio'); toggleNotificationDropdown();">
+              <p class="font-semibold text-slate-800">Nuevo Solucionario en Algoritmos</p>
+              <p class="text-[11px] text-slate-400 mt-0.5">Diego V. aportó material de Grafos Dijkstra.</p>
+              <span class="text-[10px] text-slate-400 font-medium">Hace 15 min</span>
+            </div>
+            <div class="p-3 hover:bg-slate-50 transition cursor-pointer" onclick="AppRouter.navigate('mapa-expertos'); toggleNotificationDropdown();">
+              <p class="font-semibold text-slate-800">Asesoría Par Confirmada</p>
+              <p class="text-[11px] text-slate-400 mt-0.5">Camila Navarro confirmó la sesión de Cálculo.</p>
+              <span class="text-[10px] text-slate-400 font-medium">Hace 2 horas</span>
+            </div>
+          </div>
+          <div class="p-2 border-t border-slate-100 text-center bg-slate-50/50">
+            <button onclick="toggleNotificationDropdown(); showToastNotification('Bandeja al día', 'Notificaciones leídas');" class="text-[11px] font-semibold text-red-600 hover:underline">
+              Marcar todas como leídas
+            </button>
+          </div>
+        </div>
       </div>
+
+      <!-- Auth Container -->
+      <div id="headerAuthContainer" class="relative"></div>
+
+      <!-- Botón Rojo Oficial '+ Subir recurso' -->
+      <button onclick="openUploadModal()" class="btn-primary text-xs py-2 px-3 sm:px-3.5">
+        <i class="ri-add-line text-sm"></i>
+        <span>Subir recurso</span>
+      </button>
     </div>
   </header>
 
+  <!-- Menú Drawer para Móviles -->
+  <div id="mobileDrawer" class="hidden md:hidden fixed inset-x-0 top-16 z-40 bg-[#111315] border-b border-[#202328] p-4 space-y-1 text-slate-300">
+    <button onclick="AppRouter.navigate('inicio'); document.getElementById('mobileDrawer').classList.add('hidden');" class="sidebar-nav-item w-full text-left">
+      <span class="flex items-center gap-2"><i class="ri-home-4-line"></i> Inicio</span>
+    </button>
+    <button onclick="AppRouter.navigate('repositorio'); document.getElementById('mobileDrawer').classList.add('hidden');" class="sidebar-nav-item w-full text-left">
+      <span class="flex items-center gap-2"><i class="ri-folder-shared-line"></i> Repositorio</span>
+    </button>
+    <button onclick="AppRouter.navigate('mapa-expertos'); document.getElementById('mobileDrawer').classList.add('hidden');" class="sidebar-nav-item w-full text-left">
+      <span class="flex items-center gap-2"><i class="ri-compass-3-line"></i> Mapa de expertos</span>
+    </button>
+    <button onclick="AppRouter.navigate('comunidades'); document.getElementById('mobileDrawer').classList.add('hidden');" class="sidebar-nav-item w-full text-left">
+      <span class="flex items-center gap-2"><i class="ri-group-line"></i> Comunidades</span>
+    </button>
+    <button onclick="AppRouter.navigate('perfil'); document.getElementById('mobileDrawer').classList.add('hidden');" class="sidebar-nav-item w-full text-left">
+      <span class="flex items-center gap-2"><i class="ri-user-line"></i> Mi perfil</span>
+    </button>
+    <div id="mobileAuthContainer" class="pt-2 border-t border-[#202328]"></div>
+  </div>
+
   <!-- ======================================================== -->
-  <!-- CONTENEDOR PRINCIPAL: VISTAS MODULARES                    -->
+  <!-- 3. CONTENIDO PRINCIPAL (SPA)                             -->
   <!-- ======================================================== -->
-  <main class="flex-1">
+  <main class="md:ml-[250px] min-h-screen pb-16">
 
     <!-- ====================================================== -->
-    <!-- VISTA 1: INICIO                                        -->
+    <!-- VISTA 1: INICIO (FIGMA FIGURA 13)                      -->
     <!-- ====================================================== -->
-    <div id="view-inicio" class="app-view">
+    <div id="view-inicio" class="app-view p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-8">
       
-      <!-- SECCIÓN HERO -->
-      <section class="hero-academic-bg py-12 sm:py-16">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          
-          <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            Repositorio y recursos académicos para estudiantes UTP
-          </h1>
-
-          <p class="mt-3 text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Encuentra exámenes pasados, guías de laboratorio, solucionarios y proyectos compartidos por alumnos de distintos ciclos.
-          </p>
-
-          <!-- Caja de búsqueda -->
-          <div class="search-wrapper mt-8 p-3 sm:p-4 text-left max-w-3xl mx-auto">
-            
-            <div class="relative mb-3">
-              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                <i class="ri-search-2-line text-lg text-brand-600"></i>
-              </div>
-              <input 
-                type="text" 
-                id="homeSearchInput"
-                placeholder="Buscar por curso, tema o concepto (ej. Algoritmos, Integrales, Linux, SQL)..." 
-                class="w-full pl-10 pr-24 py-2.5 bg-slate-50 rounded-lg text-slate-900 placeholder-slate-400 text-sm border border-slate-200 focus:bg-white focus:border-brand-600 outline-none"
-              >
-              <div class="absolute inset-y-0 right-1 flex items-center pr-1">
-                <button 
-                  onclick="filterHomeResources()" 
-                  class="btn-primary text-xs py-2 px-3.5"
-                >
-                  <span>Buscar</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Filtros -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
-              
-              <div>
-                <label for="homeCourseFilter" class="block text-[11px] font-semibold text-slate-500 mb-1">Materia</label>
-                <div class="relative">
-                  <select id="homeCourseFilter" onchange="filterHomeResources()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-700 font-medium focus:bg-white focus:border-brand-600 outline-none cursor-pointer pr-8">
-                    <option value="todos">Todos los cursos</option>
-                    <option value="Algoritmos y Estructura de Datos">Algoritmos y Estructura de Datos</option>
-                    <option value="Cálculo y Física Aplicada">Cálculo y Física Aplicada</option>
-                    <option value="Sistemas Operativos">Sistemas Operativos</option>
-                    <option value="Bases de Datos">Bases de Datos</option>
-                    <option value="Redes y Telecomunicaciones">Redes y Telecomunicaciones</option>
-                    <option value="Arquitectura de Computadoras">Arquitectura de Computadoras</option>
-                  </select>
-                  <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-400">
-                    <i class="ri-arrow-down-s-line text-xs"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label for="homeCycleFilter" class="block text-[11px] font-semibold text-slate-500 mb-1">Ciclo</label>
-                <div class="relative">
-                  <select id="homeCycleFilter" onchange="filterHomeResources()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-700 font-medium focus:bg-white focus:border-brand-600 outline-none cursor-pointer pr-8">
-                    <option value="todos">Todos los ciclos</option>
-                    <option value="Ciclo I">Ciclo I</option>
-                    <option value="Ciclo II">Ciclo II</option>
-                    <option value="Ciclo III">Ciclo III</option>
-                    <option value="Ciclo IV">Ciclo IV</option>
-                    <option value="Ciclo V">Ciclo V</option>
-                    <option value="Ciclo VI">Ciclo VI</option>
-                    <option value="Ciclo VII">Ciclo VII+</option>
-                  </select>
-                  <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-400">
-                    <i class="ri-arrow-down-s-line text-xs"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label for="homeTopicFilter" class="block text-[11px] font-semibold text-slate-500 mb-1">Tipo de recurso</label>
-                <div class="relative">
-                  <select id="homeTopicFilter" onchange="filterHomeResources()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-700 font-medium focus:bg-white focus:border-brand-600 outline-none cursor-pointer pr-8">
-                    <option value="todos">Todos los tipos</option>
-                    <option value="Exámenes y Prácticas">Exámenes y Prácticas</option>
-                    <option value="Guías de Laboratorio">Guías de Laboratorio</option>
-                    <option value="Apuntes y Resúmenes">Apuntes y Resúmenes</option>
-                    <option value="Proyectos y Código">Proyectos y Código Fuente</option>
-                  </select>
-                  <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-400">
-                    <i class="ri-arrow-down-s-line text-xs"></i>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Accesos rápidos -->
-            <div class="mt-3 pt-2.5 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs">
-              <span class="text-slate-400 font-medium text-[11px]">Temas consultados:</span>
-              <button onclick="applyQuickTag('Grafos')" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition text-[11px]">Grafos</button>
-              <button onclick="applyQuickTag('Cálculo')" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition text-[11px]">Cálculo</button>
-              <button onclick="applyQuickTag('Linux')" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition text-[11px]">Linux</button>
-              <button onclick="applyQuickTag('SQL')" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition text-[11px]">PostgreSQL</button>
-              <button onclick="resetAllHomeFilters()" class="ml-auto text-brand-600 hover:text-brand-800 font-semibold text-[11px]">Restablecer</button>
-            </div>
-
-          </div>
-
+      <!-- Fila de Saludo y Racha -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <p class="text-[11px] font-bold text-slate-400 tracking-wider uppercase">MIÉRCOLES, 12 DE JUNIO</p>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">Hola, Alex. ¿Qué aprenderemos hoy?</h1>
         </div>
-      </section>
-
-      <!-- SECCIÓN PRINCIPAL: CUADRÍCULA DE RECURSOS + SIDEBAR -->
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          <!-- Cuadrícula de Recursos (8 columnas) -->
-          <section class="lg:col-span-8 space-y-6">
-            
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
-              <div>
-                <div class="flex items-center gap-2">
-                  <h2 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">Material de estudio disponible</h2>
-                  <span id="homeResourceCount" class="badge-cycle font-semibold">6 recursos</span>
-                </div>
-                <p class="text-xs text-slate-500 mt-0.5">Documentos, solucionarios y proyectos organizados por materia</p>
-              </div>
-
-              <!-- Selector de Ordenamiento -->
-              <div class="flex items-center gap-2">
-                <span class="text-xs text-slate-500 font-medium">Ordenar:</span>
-                <select id="homeSortSelect" onchange="sortHomeResources()" class="bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg px-2.5 py-1.5 focus:border-brand-600 outline-none">
-                  <option value="calificacion">Mejor valorados</option>
-                  <option value="descargas">Más descargados</option>
-                  <option value="recientes">Más recientes</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Selector de formato -->
-            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 no-scrollbar">
-              <button onclick="filterResourcesByFormat('todos', this)" class="format-filter-pill active">
-                <i class="ri-apps-2-line"></i> Todos
-              </button>
-              <button onclick="filterResourcesByFormat('video', this)" class="format-filter-pill">
-                <i class="ri-youtube-line text-rose-600"></i> Video Clases
-              </button>
-              <button onclick="filterResourcesByFormat('repo', this)" class="format-filter-pill">
-                <i class="ri-git-branch-line text-slate-700"></i> Repositorios
-              </button>
-              <button onclick="filterResourcesByFormat('pdf', this)" class="format-filter-pill">
-                <i class="ri-file-text-line text-blue-600"></i> Solucionarios
-              </button>
-              <button onclick="filterResourcesByFormat('lab', this)" class="format-filter-pill">
-                <i class="ri-flask-line text-emerald-600"></i> Guías de Laboratorio
-              </button>
-            </div>
-
-            <!-- Contenedor dinámico de tarjetas -->
-            <div id="homeResourcesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <!-- Inyectado por JS -->
-            </div>
-
-            <!-- Estado Vacío -->
-            <div id="homeEmptyState" class="hidden bg-white border border-slate-200 rounded-2xl p-10 text-center">
-              <i class="ri-file-search-line text-4xl text-slate-400"></i>
-              <h3 class="text-base font-bold text-slate-800 mt-2">No encontramos coincidencias</h3>
-              <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-4">Intenta ajustar los filtros de curso o ciclo académico.</p>
-              <button onclick="resetAllHomeFilters()" class="btn-primary text-xs">Ver todos los recursos</button>
-            </div>
-
-            <!-- Enlace a Repositorio -->
-            <div class="pt-2 text-center">
-              <button onclick="AppRouter.navigate('repositorio')" class="btn-secondary text-xs">
-                <span>Explorar catálogo completo en Repositorio</span>
-                <i class="ri-arrow-right-line"></i>
-              </button>
-            </div>
-
-          </section>
-
-          <!-- Barra Lateral (4 columnas) -->
-          <aside class="lg:col-span-4 space-y-6">
-            
-            <!-- Widget Top Contribuyentes (Requerido) -->
-            <div class="edu-card p-5">
-              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
-                    <i class="ri-trophy-line text-lg"></i>
-                  </div>
-                  <div>
-                    <h3 class="text-sm font-bold text-slate-900 leading-tight">Top Contribuyentes</h3>
-                    <p class="text-[11px] text-slate-400 font-medium">Líderes de apoyo estudiantil</p>
-                  </div>
-                </div>
-                <span class="text-[10px] font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded border border-brand-200">
-                  Ranking
-                </span>
-              </div>
-
-              <!-- Lista de Alumnos Top -->
-              <div class="space-y-3">
-                
-                <div class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 transition cursor-pointer" onclick="AppRouter.navigate('mapa-expertos')">
-                  <div class="flex items-center gap-2.5">
-                    <span class="w-4 text-center text-xs font-bold text-slate-400">1</span>
-                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=120" alt="Diego Valenzuela" class="w-8 h-8 rounded-full object-cover">
-                    <div>
-                      <h4 class="text-xs font-semibold text-slate-900">Diego Valenzuela</h4>
-                      <p class="text-[10px] text-slate-500">Ciencias de la Computación</p>
-                    </div>
-                  </div>
-                  <span class="text-xs font-medium text-slate-600">3,850 pts</span>
-                </div>
-
-                <div class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 transition cursor-pointer" onclick="AppRouter.navigate('mapa-expertos')">
-                  <div class="flex items-center gap-2.5">
-                    <span class="w-4 text-center text-xs font-bold text-slate-400">2</span>
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=120" alt="Camila Navarro" class="w-8 h-8 rounded-full object-cover">
-                    <div>
-                      <h4 class="text-xs font-semibold text-slate-900">Camila Navarro</h4>
-                      <p class="text-[10px] text-slate-500">Ingeniería Industrial</p>
-                    </div>
-                  </div>
-                  <span class="text-xs font-medium text-slate-600">3,120 pts</span>
-                </div>
-
-                <div class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 transition cursor-pointer" onclick="AppRouter.navigate('mapa-expertos')">
-                  <div class="flex items-center gap-2.5">
-                    <span class="w-4 text-center text-xs font-bold text-slate-400">3</span>
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120" alt="Carlos Mendoza" class="w-8 h-8 rounded-full object-cover">
-                    <div>
-                      <h4 class="text-xs font-semibold text-slate-900">Carlos Mendoza</h4>
-                      <p class="text-[10px] text-slate-500">Ingeniería de Software</p>
-                    </div>
-                  </div>
-                  <span class="text-xs font-medium text-slate-600">2,640 pts</span>
-                </div>
-
-                <div class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 transition cursor-pointer" onclick="AppRouter.navigate('mapa-expertos')">
-                  <div class="flex items-center gap-2.5">
-                    <span class="w-4 text-center text-xs font-bold text-slate-400">4</span>
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120" alt="Andrea Flores" class="w-8 h-8 rounded-full object-cover">
-                    <div>
-                      <h4 class="text-xs font-semibold text-slate-900">Andrea Flores</h4>
-                      <p class="text-[10px] text-slate-500">Ing. de la Información</p>
-                    </div>
-                  </div>
-                  <span class="text-xs font-medium text-slate-600">2,190 pts</span>
-                </div>
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="mt-4 pt-3 border-t border-slate-100">
-                <button onclick="AppRouter.navigate('mapa-expertos')" class="w-full text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center justify-center gap-1.5 transition">
-                  <span>Conocer tutores pares disponibles</span>
-                  <i class="ri-arrow-right-line"></i>
-                </button>
-              </div>
-            </div>
-
-            <!-- Banner Call To Action: Compartir Material -->
-            <div class="bg-slate-900 rounded-xl p-5 text-white">
-              <div class="flex items-start gap-3">
-                <div class="p-2 rounded-lg bg-white/10 text-white shrink-0">
-                  <i class="ri-upload-cloud-2-line text-lg"></i>
-                </div>
-                <div>
-                  <h4 class="font-bold text-sm">¿Tienes material para compartir?</h4>
-                  <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-                    Sube tus apuntes, evaluaciones pasadas o ejercicios para colaborar con otros compañeros.
-                  </p>
-                </div>
-              </div>
-              <button onclick="openUploadModal()" class="mt-4 w-full py-2.5 px-4 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-lg text-xs transition flex items-center justify-center gap-1.5">
-                <i class="ri-add-line text-sm"></i>
-                <span>Subir un documento</span>
-              </button>
-            </div>
-
-            <!-- Salas de Estudio Activas -->
-            <div class="edu-card p-5">
-              <div class="flex items-center justify-between mb-3">
-                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Grupos de estudio
-                </h4>
-                <button onclick="AppRouter.navigate('comunidades')" class="text-[11px] font-semibold text-brand-600 hover:underline">Ver todos</button>
-              </div>
-              
-              <div class="space-y-1.5 text-xs">
-                <div onclick="AppRouter.navigate('comunidades')" class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 transition cursor-pointer">
-                  <span class="font-medium text-slate-800">Software & Arquitectura</span>
-                  <span class="text-[11px] text-slate-400">88 miembros</span>
-                </div>
-                <div onclick="AppRouter.navigate('comunidades')" class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 transition cursor-pointer">
-                  <span class="font-medium text-slate-800">Cálculo Diferencial e Integral</span>
-                  <span class="text-[11px] text-slate-400">46 miembros</span>
-                </div>
-                <div onclick="AppRouter.navigate('comunidades')" class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 transition cursor-pointer">
-                  <span class="font-medium text-slate-800">Laboratorio de Redes & Linux</span>
-                  <span class="text-[11px] text-slate-400">29 miembros</span>
-                </div>
-              </div>
-            </div>
-
-          </aside>
-
+        
+        <!-- Badge de Racha Estudiantil -->
+        <div class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-orange-50 border border-orange-200 shrink-0 self-start sm:self-auto">
+          <div class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center font-bold text-base shadow-xs">
+            <i class="ri-fire-fill"></i>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-slate-900 block leading-tight">6 días aprendiendo</span>
+            <span class="text-[10px] text-orange-600 font-medium">Tu mejor racha: 12 días</span>
+          </div>
         </div>
       </div>
+
+      <!-- Tarjeta Hero Oscura (Figura 13) -->
+      <div class="figma-hero-card p-6 sm:p-8">
+        <div class="figma-hero-bg-accent"></div>
+        <div class="relative z-10 max-w-2xl">
+          <span class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-red-600/30 text-red-300 border border-red-500/30">
+            CONOCIMIENTO COLECTIVO
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-3 leading-snug">
+            Todo lo que necesitas para avanzar, en un solo lugar
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-lg leading-relaxed">
+            Explora exámenes, apuntes, videos y asesorías validadas por estudiantes de ciclos superiores.
+          </p>
+
+          <!-- Barra de Búsqueda con Botón Rojo Buscar -->
+          <div class="mt-6 flex items-center bg-white rounded-xl p-1.5 shadow-lg max-w-xl">
+            <div class="pl-3 text-slate-400">
+              <i class="ri-search-2-line text-base text-red-600"></i>
+            </div>
+            <input 
+              type="text" 
+              id="homeSearchInput"
+              placeholder="Buscar por curso, tema o concepto..." 
+              class="w-full px-3 py-2 text-xs sm:text-sm text-slate-900 placeholder-slate-400 outline-none bg-transparent"
+            >
+            <button onclick="filterHomeResources()" class="btn-primary text-xs py-2 px-4 shrink-0">
+              <span>Buscar</span>
+            </button>
+          </div>
+
+          <!-- Sugerencias de búsqueda -->
+          <div class="mt-3 flex items-center gap-2 text-xs text-slate-400 flex-wrap">
+            <span class="text-[11px] font-medium">Sugerencias:</span>
+            <button onclick="applyQuickTag('Cálculo')" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-slate-200 transition text-[11px]">Cálculo</button>
+            <button onclick="applyQuickTag('SQL')" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-slate-200 transition text-[11px]">Base de Datos</button>
+            <button onclick="applyQuickTag('Física')" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-slate-200 transition text-[11px]">Física</button>
+            <button onclick="applyQuickTag('Algoritmos')" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-slate-200 transition text-[11px]">Algoritmos</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Métricas Clave (4 Stat Cards, Figura 13) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+          <p class="text-xs font-semibold text-slate-500">Recursos publicados</p>
+          <p class="text-2xl font-black text-slate-900 mt-1">2,847</p>
+          <span class="text-[11px] text-emerald-600 font-medium flex items-center gap-1 mt-1">
+            <i class="ri-arrow-up-line"></i> +142 este ciclo
+          </span>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+          <p class="text-xs font-semibold text-slate-500">Estudiantes activos</p>
+          <p class="text-2xl font-black text-slate-900 mt-1">1,936</p>
+          <span class="text-[11px] text-emerald-600 font-medium flex items-center gap-1 mt-1">
+            <i class="ri-user-follow-line"></i> En todas las sedes
+          </span>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+          <p class="text-xs font-semibold text-slate-500">Expertos registrados</p>
+          <p class="text-2xl font-black text-slate-900 mt-1">184</p>
+          <span class="text-[11px] text-red-600 font-medium flex items-center gap-1 mt-1">
+            <i class="ri-verified-badge-fill"></i> Tutores pares certificados
+          </span>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+          <p class="text-xs font-semibold text-slate-500">Comunidades activas</p>
+          <p class="text-2xl font-black text-slate-900 mt-1">24</p>
+          <span class="text-[11px] text-slate-500 font-medium flex items-center gap-1 mt-1">
+            <i class="ri-group-line"></i> Grupos de práctica
+          </span>
+        </div>
+      </div>
+
+      <!-- Accesos Rápidos (4 Quick Access Cards, Figura 13) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div onclick="openUploadModal()" class="bg-white p-4 rounded-xl border border-slate-200 hover:border-red-300 hover:shadow-sm transition cursor-pointer group">
+          <div class="w-10 h-10 rounded-lg bg-red-50 text-red-600 flex items-center justify-center font-bold text-lg mb-3 group-hover:scale-105 transition-transform">
+            <i class="ri-upload-cloud-line"></i>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 group-hover:text-red-600 transition-colors">Subir recurso</h3>
+          <p class="text-xs text-slate-500 mt-1">Comparte apuntes, guías o código con la comunidad.</p>
+        </div>
+
+        <div onclick="AppRouter.navigate('repositorio')" class="bg-white p-4 rounded-xl border border-slate-200 hover:border-red-300 hover:shadow-sm transition cursor-pointer group">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg mb-3 group-hover:scale-105 transition-transform">
+            <i class="ri-search-line"></i>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Buscar conocimiento</h3>
+          <p class="text-xs text-slate-500 mt-1">Explora material filtrado por ciclo y carrera.</p>
+        </div>
+
+        <div onclick="AppRouter.navigate('mapa-expertos')" class="bg-white p-4 rounded-xl border border-slate-200 hover:border-red-300 hover:shadow-sm transition cursor-pointer group">
+          <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg mb-3 group-hover:scale-105 transition-transform">
+            <i class="ri-user-star-line"></i>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors">Ver expertos</h3>
+          <p class="text-xs text-slate-500 mt-1">Agenda asesoría par con estudiantes destacados.</p>
+        </div>
+
+        <div onclick="AppRouter.navigate('comunidades')" class="bg-white p-4 rounded-xl border border-slate-200 hover:border-red-300 hover:shadow-sm transition cursor-pointer group">
+          <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-lg mb-3 group-hover:scale-105 transition-transform">
+            <i class="ri-team-line"></i>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 group-hover:text-purple-600 transition-colors">Comunidades</h3>
+          <p class="text-xs text-slate-500 mt-1">Únete a grupos de estudio de tu especialidad.</p>
+        </div>
+      </div>
+
+      <!-- Sección: Recursos Mejor Valorados (Figura 13 & 14) -->
+      <div class="space-y-4 pt-2">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">Recursos mejor valorados</h2>
+            <p class="text-xs text-slate-500">Material verificado por la comunidad estudiantil</p>
+          </div>
+
+          <!-- Filtros de formato con Pills -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+            <button onclick="filterResourcesByFormat('todos', this)" class="format-filter-pill active">
+              <i class="ri-apps-2-line"></i> Todos
+            </button>
+            <button onclick="filterResourcesByFormat('video', this)" class="format-filter-pill">
+              <i class="ri-youtube-fill text-red-600"></i> Video Clases
+            </button>
+            <button onclick="filterResourcesByFormat('repo', this)" class="format-filter-pill">
+              <i class="ri-github-fill text-slate-800"></i> Repositorios
+            </button>
+            <button onclick="filterResourcesByFormat('pdf', this)" class="format-filter-pill">
+              <i class="ri-file-text-line text-blue-600"></i> Solucionarios
+            </button>
+            <button onclick="filterResourcesByFormat('lab', this)" class="format-filter-pill">
+              <i class="ri-flask-line text-emerald-600"></i> Laboratorios
+            </button>
+          </div>
+        </div>
+
+        <!-- Cuadrícula de Recursos Figma -->
+        <div id="homeResourcesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Renderizado dinámicamente con las tarjetas Figma Figura 14 -->
+        </div>
+
+        <!-- Estado Vacío -->
+        <div id="homeEmptyState" class="hidden text-center py-12 bg-white rounded-xl border border-slate-200">
+          <i class="ri-folder-open-line text-4xl text-slate-300"></i>
+          <p class="text-sm font-bold text-slate-700 mt-2">No se encontraron recursos</p>
+          <p class="text-xs text-slate-400 mt-1">Prueba cambiando los filtros o el término de búsqueda.</p>
+        </div>
+      </div>
+
     </div>
 
     <!-- ====================================================== -->
-    <!-- VISTA 2: REPOSITORIO                                   -->
+    <!-- VISTA 2: REPOSITORIO (FIGMA FIGURA 14)                 -->
     <!-- ====================================================== -->
-    <div id="view-repositorio" class="app-view hidden">
-      <div class="bg-white border-b border-slate-200 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div id="view-repositorio" class="app-view hidden p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
+      
+      <!-- Cabecera del Repositorio -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <p class="text-[11px] font-bold text-red-600 tracking-wider uppercase">REPOSITORIO ACADÉMICO</p>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">Conocimiento que permanece</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
+            Biblioteca abierta de material académico validado por la comunidad estudiantil.
+          </p>
+        </div>
+        <button onclick="openUploadModal()" class="btn-primary text-xs py-2 px-3.5 shrink-0 self-start sm:self-auto">
+          <i class="ri-upload-cloud-line text-sm"></i>
+          <span>Publicar recurso</span>
+        </button>
+      </div>
+
+      <!-- Tira de Protocolo en 4 Fases (Figma Figura 14) -->
+      <div class="figma-protocol-strip p-4 sm:p-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="flex items-start gap-3">
+            <span class="protocol-step-circle">1</span>
             <div>
-              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-brand-50 text-brand-700 mb-2 border border-brand-200">
-                <i class="ri-database-2-line"></i> Repositorio Abierto
-              </div>
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Catálogo Académico de Recursos</h1>
-              <p class="text-sm text-slate-500 mt-1 max-w-2xl">Búsqueda avanzada de exámenes pasados, guías de laboratorio, apuntes completos y proyectos.</p>
+              <h4 class="text-xs font-bold text-white">Ingreso</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">El estudiante sube material organizado por curso y ciclo.</p>
             </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <span class="protocol-step-circle">2</span>
             <div>
-              <button onclick="openUploadModal()" class="btn-primary text-xs">
-                <i class="ri-upload-cloud-line"></i>
-                <span>Subir Documento</span>
-              </button>
+              <h4 class="text-xs font-bold text-white">Validación</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Revisión de vigencia y pertinencia por moderadores.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <span class="protocol-step-circle">3</span>
+            <div>
+              <h4 class="text-xs font-bold text-white">Publicación</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Clasificación en la base de conocimiento abierta.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <span class="protocol-step-circle">4</span>
+            <div>
+              <h4 class="text-xs font-bold text-white">Vigencia</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Actualización continua según la malla curricular.</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Barra de Filtros Repositorio -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm mb-6">
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
-            <div class="md:col-span-2 relative">
-              <i class="ri-search-line text-slate-400 absolute left-3.5 top-3"></i>
-              <input 
-                type="text" 
-                id="repoSearchInput" 
-                placeholder="Filtrar por nombre del documento o materia..." 
-                class="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-brand-600 outline-none"
-              >
-            </div>
-            <div>
-              <select id="repoCourseFilter" onchange="filterRepoResources()" class="w-full text-xs py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-brand-600 outline-none">
-                <option value="todos">Todos los Cursos</option>
-                <option value="Algoritmos y Estructura de Datos">Algoritmos y Estructuras</option>
-                <option value="Cálculo y Física Aplicada">Cálculo y Física</option>
-                <option value="Sistemas Operativos">Sistemas Operativos</option>
-                <option value="Bases de Datos">Bases de Datos</option>
-                <option value="Redes y Telecomunicaciones">Redes y Telecomunicaciones</option>
-                <option value="Arquitectura de Computadoras">Arquitectura</option>
-              </select>
-            </div>
-            <div>
-              <select id="repoCategoryFilter" onchange="filterRepoResources()" class="w-full text-xs py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-brand-600 outline-none">
-                <option value="todos">Cualquier Categoría</option>
-                <option value="Exámenes y Prácticas">Exámenes Pasados</option>
-                <option value="Guías de Laboratorio">Guías de Laboratorio</option>
-                <option value="Apuntes y Resúmenes">Apuntes y Resúmenes</option>
-                <option value="Proyectos y Código">Proyectos y Código</option>
-              </select>
-            </div>
+      <!-- Barra de Filtros Repositorio -->
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div class="md:col-span-2 relative">
+            <i class="ri-search-2-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input 
+              type="text" 
+              id="repoSearchInput" 
+              placeholder="Buscar por título, docente o tema..." 
+              class="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:border-red-600 outline-none"
+            >
+          </div>
+
+          <div>
+            <select id="repoCourseFilter" onchange="filterRepoResources()" class="w-full text-xs py-2 px-3 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:border-red-600 outline-none">
+              <option value="todos">Todos los Cursos</option>
+              <option value="Algoritmos y Estructura de Datos">Algoritmos y Estructuras</option>
+              <option value="Cálculo y Física Aplicada">Cálculo y Física</option>
+              <option value="Sistemas Operativos">Sistemas Operativos</option>
+              <option value="Bases de Datos">Bases de Datos</option>
+              <option value="Redes y Telecomunicaciones">Redes y Telecomunicaciones</option>
+              <option value="Arquitectura de Computadoras">Arquitectura</option>
+            </select>
+          </div>
+
+          <div>
+            <select id="repoCategoryFilter" onchange="filterRepoResources()" class="w-full text-xs py-2 px-3 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:border-red-600 outline-none">
+              <option value="todos">Todas las Categorías</option>
+              <option value="Apuntes y Resúmenes">Apuntes y Resúmenes</option>
+              <option value="Exámenes y Prácticas">Exámenes Pasados</option>
+              <option value="Guías de Laboratorio">Guías de Laboratorio</option>
+              <option value="Proyectos y Código">Proyectos y Código</option>
+            </select>
           </div>
         </div>
 
-        <!-- Selector de Formato en Repositorio -->
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-4 no-scrollbar">
+        <!-- Filtro por formato -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pt-2 border-t border-slate-100 no-scrollbar">
           <button onclick="filterRepoByFormat('todos', this)" class="format-filter-pill active">
-            <i class="ri-apps-2-line"></i> Todos los Materiales
+            <i class="ri-apps-2-line"></i> Todos los formatos
           </button>
           <button onclick="filterRepoByFormat('video', this)" class="format-filter-pill">
-            <i class="ri-youtube-fill text-rose-500"></i> Video Clases & Talleres
+            <i class="ri-youtube-fill text-red-600"></i> Video Clases
           </button>
           <button onclick="filterRepoByFormat('repo', this)" class="format-filter-pill">
-            <i class="ri-github-fill text-slate-800"></i> Repositorios GitHub
+            <i class="ri-github-fill text-slate-800"></i> Repositorios Git
           </button>
           <button onclick="filterRepoByFormat('pdf', this)" class="format-filter-pill">
-            <i class="ri-file-text-line text-blue-600"></i> Solucionarios & PDFs
+            <i class="ri-file-text-line text-blue-600"></i> Solucionarios PDF
           </button>
           <button onclick="filterRepoByFormat('lab', this)" class="format-filter-pill">
-            <i class="ri-flask-line text-emerald-600"></i> Guías de Laboratorio
+            <i class="ri-flask-line text-emerald-600"></i> Guías de Lab
           </button>
         </div>
-
-        <!-- Contenedor del Repositorio -->
-        <div id="repoResourcesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Inyectado dinámicamente -->
-        </div>
       </div>
+
+      <!-- Cuadrícula de Recursos Repositorio -->
+      <div id="repoResourcesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Inyectado dinámicamente con Figma cards -->
+      </div>
+
     </div>
 
     <!-- ====================================================== -->
     <!-- VISTA 3: MAPA DE EXPERTOS                              -->
     <!-- ====================================================== -->
-    <div id="view-mapa-expertos" class="app-view hidden">
-      <div class="bg-white border-b border-slate-200 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-brand-50 text-brand-700 mb-2 border border-brand-200">
-                <i class="ri-user-star-line"></i> Asesorías Estudiantiles
-              </div>
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Mapa de Expertos y Tutores Pares</h1>
-              <p class="text-sm text-slate-500 mt-1 max-w-2xl">Conecta con compañeros de ciclos superiores para resolver dudas de cursos complejos y preparar tus exámenes.</p>
-            </div>
-            <div>
-              <button onclick="showToastNotification('Postulación Recibida', 'Nos pondremos en contacto contigo para verificar tus materias destacadas')" class="btn-secondary text-xs">
-                <i class="ri-user-add-line"></i>
-                <span>Postular como Mentor Par</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Filtros de Especialidad -->
-          <div class="flex flex-wrap items-center gap-2 mt-6 pt-6 border-t border-slate-100">
-            <span class="text-xs font-bold text-slate-400 mr-2">Especialidad:</span>
-            <button onclick="filterMentorsBySpecialty('todos', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-600 text-white transition">Todos</button>
-            <button onclick="filterMentorsBySpecialty('Algoritmos', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Algoritmos & Programación</button>
-            <button onclick="filterMentorsBySpecialty('Física', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Cálculo & Física</button>
-            <button onclick="filterMentorsBySpecialty('Bases de Datos', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Bases de Datos & SQL</button>
-            <button onclick="filterMentorsBySpecialty('Sistemas', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Sistemas Operativos & Linux</button>
-            <button onclick="filterMentorsBySpecialty('Redes', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Redes y Telecomunicaciones</button>
-          </div>
+    <div id="view-mapa-expertos" class="app-view hidden p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <p class="text-[11px] font-bold text-red-600 tracking-wider uppercase">MAPA DE EXPERTOS Y ASESORÍAS</p>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">Aprende de quienes ya pasaron por ahí</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
+            Conecta con estudiantes de ciclos superiores para resolver dudas puntuales o preparar tus evaluaciones.
+          </p>
         </div>
+        <button onclick="showToastNotification('Postulación Recibida', 'Nos contactaremos contigo para validar tus materias destacadas')" class="btn-secondary text-xs">
+          <i class="ri-user-add-line"></i>
+          <span>Postular como Mentor Par</span>
+        </button>
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div id="expertsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Inyectado dinámicamente -->
-        </div>
+      <!-- Filtros de especialidad -->
+      <div class="flex flex-wrap items-center gap-1.5 pt-2">
+        <button onclick="filterMentorsBySpecialty('todos', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-600 text-white transition">Todos</button>
+        <button onclick="filterMentorsBySpecialty('Algoritmos', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Algoritmos</button>
+        <button onclick="filterMentorsBySpecialty('Física', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Cálculo & Física</button>
+        <button onclick="filterMentorsBySpecialty('Bases de Datos', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Bases de Datos</button>
+        <button onclick="filterMentorsBySpecialty('Sistemas', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Sistemas Operativos</button>
+        <button onclick="filterMentorsBySpecialty('Redes', event)" class="mentor-filter-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Redes y Telecomunicaciones</button>
       </div>
+
+      <div id="expertsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Inyectado dinámicamente -->
+      </div>
+
     </div>
 
     <!-- ====================================================== -->
-    <!-- VISTA 4: COMUNIDADES                                   -->
+    <!-- VISTA 4: COMUNIDADES DE PRÁCTICA (FIGMA FIGURA 16)      -->
     <!-- ====================================================== -->
-    <div id="view-comunidades" class="app-view hidden">
-      <div class="bg-white border-b border-slate-200 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-brand-50 text-brand-700 mb-2 border border-brand-200">
-                <i class="ri-community-line"></i> Salas de Estudio
-              </div>
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Comunidades y Grupos Universitarios</h1>
-              <p class="text-sm text-slate-500 mt-1 max-w-2xl">Únete a salas activas de debate y maratones de estudio grupal previas a exámenes.</p>
-            </div>
-            <div>
-              <button onclick="showToastNotification('Crear Comunidad', 'El formulario de solicitud de grupo se abrirá próximamente')" class="btn-primary text-xs">
-                <i class="ri-add-line"></i>
-                <span>Crear Nuevo Grupo</span>
-              </button>
-            </div>
-          </div>
+    <div id="view-comunidades" class="app-view hidden p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <p class="text-[11px] font-bold text-red-600 tracking-wider uppercase">COMUNIDADES DE PRÁCTICA</p>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">Crecer juntos es llegar más lejos</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
+            Espacios organizados donde los estudiantes resuelven dudas, comparten material y construyen proyectos colaborativos.
+          </p>
         </div>
+        <button onclick="showToastNotification('Crear comunidad', 'El formulario de propuesta de comunidad se abrirá próximamente')" class="btn-primary text-xs">
+          <i class="ri-add-line"></i>
+          <span>Crear comunidad</span>
+        </button>
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-        
-        <!-- Maratones de Repaso en Vivo -->
-        <div>
-          <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-            <i class="ri-broadcast-fill text-brand-600"></i>
-            Maratones de Repaso en Vivo (Semana Pre-Exámenes)
-          </h2>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
-            <div class="bg-gradient-to-r from-brand-900 to-brand-700 rounded-2xl p-5 text-white flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between">
-                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-400 text-slate-950">ESTE VIERNES 19:00</span>
-                  <span class="text-xs text-blue-200">Google Meet</span>
-                </div>
-                <h3 class="text-base font-bold mt-3">Repaso Intensivo: Árboles AVL y Grafos Dijkstra</h3>
-                <p class="text-xs text-blue-100 mt-1">Resolución en vivo de bancos de exámenes pasados con tutores pares y código en C++.</p>
-              </div>
-              <div class="mt-4 pt-3 border-t border-white/20 flex items-center justify-between">
-                <span class="text-xs text-blue-100">148 estudiantes confirmados</span>
-                <button onclick="showToastNotification('Inscripción Confirmada', 'Se envió el enlace de la sala virtual a tu correo institucional')" class="px-3 py-1.5 bg-white text-brand-800 rounded-lg text-xs font-bold hover:bg-blue-50 transition">
-                  Inscribirme gratis
-                </button>
-              </div>
-            </div>
-
-            <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-5 text-white flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between">
-                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-400 text-slate-950">SÁBADO 16:00</span>
-                  <span class="text-xs text-slate-300">Google Meet</span>
-                </div>
-                <h3 class="text-base font-bold mt-3">Taller Práctico: Integrales de Línea y Campos Magnéticos</h3>
-                <p class="text-xs text-slate-300 mt-1">Solución de 15 problemas tipo de electromagnetismo con diagramas vectoriales.</p>
-              </div>
-              <div class="mt-4 pt-3 border-t border-slate-700 flex items-center justify-between">
-                <span class="text-xs text-slate-300">92 estudiantes confirmados</span>
-                <button onclick="showToastNotification('Inscripción Confirmada', 'Se envió el enlace de la sala virtual a tu correo institucional')" class="px-3 py-1.5 bg-white text-slate-900 rounded-lg text-xs font-bold hover:bg-slate-100 transition">
-                  Inscribirme gratis
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Directorio de Comunidades -->
-        <div>
-          <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-            <i class="ri-team-line text-brand-600"></i>
-            Salas de Carrera y Grupos de Estudio
-          </h2>
-          <div id="communitiesGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <!-- Inyectado dinámicamente -->
-          </div>
-        </div>
-
+      <!-- Cuadrícula de Comunidades Figma Figura 16 -->
+      <div id="communitiesGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Inyectado dinámicamente -->
       </div>
+
     </div>
 
     <!-- ====================================================== -->
-    <!-- VISTA 5: PERFIL DEL ESTUDIANTE                         -->
+    <!-- VISTA 5: PERFIL DEL ESTUDIANTE (FIGMA FIGURA 17)        -->
     <!-- ====================================================== -->
-    <div id="view-perfil" class="app-view hidden">
-      <div class="bg-white border-b border-slate-200 pb-8">
-        
-        <!-- Portada -->
-        <div class="h-36 sm:h-44 bg-gradient-to-r from-brand-700 via-brand-600 to-sky-600"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="relative -mt-16 sm:-mt-20 flex flex-col sm:flex-row items-center sm:items-end justify-between gap-6 pb-6 border-b border-slate-100">
-            <div class="flex flex-col sm:flex-row items-center sm:items-end gap-5 text-center sm:text-left">
-              <div class="relative">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=240" alt="Valeria Mendoza" class="w-32 h-32 rounded-2xl object-cover ring-4 ring-white shadow-md">
-                <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
-              </div>
-              <div class="sm:mb-2">
-                <div class="flex items-center justify-center sm:justify-start gap-2">
-                  <h1 id="profileUserName" class="text-2xl font-black text-slate-900">Valeria Mendoza</h1>
-                  <i class="ri-verified-badge-fill text-brand-600 text-lg"></i>
-                </div>
-                <p id="profileUserDegree" class="text-xs sm:text-sm font-semibold text-brand-700 mt-0.5">Ingeniería de Sistemas de Información • Ciclo VII</p>
-                <p class="text-xs text-slate-500 mt-0.5">Perfil Estudiantil Verificado</p>
-              </div>
+    <div id="view-perfil" class="app-view hidden p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto space-y-6">
+      
+      <!-- Banner Oscuro Figma del Perfil de Alex Mendoza -->
+      <div class="bg-[#17181e] rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden border border-[#282a32]">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
+          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
+            <!-- Iniciales AM en círculo beige/tostado Figma -->
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-[#92734a] to-[#c7a97b] text-white font-extrabold text-2xl flex items-center justify-center shrink-0 shadow-lg">
+              AM
             </div>
 
-            <div class="flex items-center gap-2">
-              <button onclick="openUploadModal()" class="btn-primary text-xs">
-                <i class="ri-upload-cloud-line"></i> Subir Aporte
-              </button>
-              <button onclick="showToastNotification('Preferencias', 'Tu perfil y alertas se encuentran sincronizados')" class="btn-secondary text-xs">
-                Editar Datos
-              </button>
+            <div>
+              <div class="flex items-center justify-center sm:justify-start gap-2">
+                <h1 id="profileUserName" class="text-2xl font-black text-white">Alex Mendoza</h1>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-red-600/30 text-red-400 border border-red-500/30">
+                  Colaborador
+                </span>
+              </div>
+              <p id="profileUserDegree" class="text-xs sm:text-sm text-slate-300 mt-1">
+                Ingeniería de Sistemas · VI ciclo · Sede Lima Centro
+              </p>
+              
+              <!-- Badges de competencias del perfil -->
+              <div class="flex items-center justify-center sm:justify-start gap-1.5 mt-3 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">Python</span>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">Base de Datos</span>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">UX</span>
+              </div>
             </div>
           </div>
 
-          <!-- Métricas del usuario -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-              <div class="flex items-center gap-2 text-brand-600 mb-1">
-                <i class="ri-copper-coin-line text-lg"></i>
-                <span class="text-xs font-bold">Puntos Académicos</span>
-              </div>
-              <p class="text-2xl font-extrabold text-slate-900" id="profilePointsVal">2,680</p>
-              <p class="text-[11px] text-emerald-600 font-semibold mt-0.5">Nivel 5: Colaborador Oro</p>
-            </div>
+          <!-- Acciones de perfil -->
+          <div class="flex items-center gap-2">
+            <button onclick="openUploadModal()" class="btn-primary text-xs py-2 px-3.5">
+              <i class="ri-add-line"></i> Subir aporte
+            </button>
+            <button onclick="showToastNotification('Perfil Sincronizado', 'Tus datos están actualizados con el servidor.')" class="btn-secondary text-xs py-2 px-3.5 bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700">
+              Editar
+            </button>
+          </div>
+        </div>
 
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-              <div class="flex items-center gap-2 text-brand-600 mb-1">
-                <i class="ri-file-upload-line text-lg"></i>
-                <span class="text-xs font-bold">Aportes Subidos</span>
-              </div>
-              <p class="text-2xl font-extrabold text-slate-900" id="profileUploadsVal">16</p>
-              <p class="text-[11px] text-slate-500 font-medium mt-0.5">14 validados por tutores</p>
-            </div>
-
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-              <div class="flex items-center gap-2 text-brand-600 mb-1">
-                <i class="ri-download-cloud-line text-lg"></i>
-                <span class="text-xs font-bold">Descargas Recibidas</span>
-              </div>
-              <p class="text-2xl font-extrabold text-slate-900" id="profileDownloadsVal">4,210</p>
-              <p class="text-[11px] text-slate-500 font-medium mt-0.5">Estudiantes beneficiados</p>
-            </div>
-
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-              <div class="flex items-center gap-2 text-amber-500 mb-1">
-                <i class="ri-star-fill text-lg"></i>
-                <span class="text-xs font-bold text-slate-700">Calificación Media</span>
-              </div>
-              <p class="text-2xl font-extrabold text-slate-900">4.9 <span class="text-xs text-slate-400 font-normal">/ 5.0</span></p>
-              <p class="text-[11px] text-slate-500 font-medium mt-0.5">168 valoraciones positivas</p>
-            </div>
+        <!-- Estadísticas numéricas (Figma Figura 17: 1240, 18, 4.8, 6) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-6 border-t border-slate-800 text-center sm:text-left">
+          <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+            <p class="text-[11px] font-medium text-slate-400">Puntos acumulados</p>
+            <p class="text-2xl font-black text-amber-400 mt-0.5" id="profilePointsVal">1,240</p>
+          </div>
+          <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+            <p class="text-[11px] font-medium text-slate-400">Recursos publicados</p>
+            <p class="text-2xl font-black text-white mt-0.5" id="profileUploadsVal">18</p>
+          </div>
+          <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+            <p class="text-[11px] font-medium text-slate-400">Valoración promedio</p>
+            <p class="text-2xl font-black text-white mt-0.5 flex items-center justify-center sm:justify-start gap-1">
+              <span>4.8</span> <i class="ri-star-fill text-amber-400 text-base"></i>
+            </p>
+          </div>
+          <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+            <p class="text-[11px] font-medium text-slate-400">Mentorías brindadas</p>
+            <p class="text-2xl font-black text-white mt-0.5">6</p>
           </div>
         </div>
       </div>
 
-      <!-- Pestañas internas de perfil -->
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="flex items-center gap-4 border-b border-slate-200 mb-6">
-          <button onclick="switchProfileTab('uploads', event)" class="profile-tab-button pb-3 px-1 border-b-2 border-brand-600 text-xs font-bold text-brand-600 flex items-center gap-1.5">
-            <i class="ri-folder-check-line text-base"></i>
-            <span>Mis Recursos Subidos</span>
-          </button>
-          <button onclick="switchProfileTab('saved', event)" class="profile-tab-button pb-3 px-1 border-b-2 border-transparent text-xs font-medium text-slate-500 hover:text-slate-900 flex items-center gap-1.5">
-            <i class="ri-bookmark-line text-base"></i>
-            <span>Guardados para Exámenes</span>
-          </button>
-          <button onclick="switchProfileTab('badges', event)" class="profile-tab-button pb-3 px-1 border-b-2 border-transparent text-xs font-medium text-slate-500 hover:text-slate-900 flex items-center gap-1.5">
-            <i class="ri-award-line text-base"></i>
-            <span>Insignias Académicas</span>
-          </button>
-        </div>
-
-        <!-- Panel 1: Mis Subidas -->
-        <div id="profileTab-uploads" class="profile-subtab-panel space-y-3">
-          <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <span class="badge-course">Algoritmos y Estructura de Datos</span>
-              <h4 class="text-sm font-bold text-slate-900 mt-1">Resumen Completo: Árboles B, Hash Tables y Grafos Dirigidos</h4>
-              <p class="text-xs text-slate-400 mt-0.5">PDF (4.2 MB) • 840 descargas • 4.9 / 5</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button onclick="showToastNotification('Descarga iniciada', 'Resumen Completo: Árboles B')" class="btn-secondary text-xs py-1.5">Descargar</button>
-              <button onclick="showToastNotification('Estadísticas', '840 descargas registradas')" class="btn-secondary text-xs py-1.5">Métricas</button>
-            </div>
+      <!-- Barra de progreso y nivel del estudiante -->
+      <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-4">
+        <div>
+          <div class="flex items-center justify-between text-xs mb-1.5">
+            <span class="font-bold text-slate-800">Nivel de Contribución: Colaborador Activo (Nivel 4)</span>
+            <span class="font-semibold text-red-600">1,240 / 1,500 pts</span>
           </div>
-
-          <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <span class="badge-course">Bases de Datos</span>
-              <h4 class="text-sm font-bold text-slate-900 mt-1">Guía Práctica: Triggers y Stored Procedures en PostgreSQL 15</h4>
-              <p class="text-xs text-slate-400 mt-0.5">PDF + SQL (1.8 MB) • 1,290 descargas • 5.0 / 5</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button onclick="showToastNotification('Descarga iniciada', 'Guía de Triggers PostgreSQL')" class="btn-secondary text-xs py-1.5">Descargar</button>
-              <button onclick="showToastNotification('Estadísticas', '1,290 descargas registradas')" class="btn-secondary text-xs py-1.5">Métricas</button>
-            </div>
+          <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+            <div class="bg-red-600 h-2 rounded-full" style="width: 82%"></div>
           </div>
         </div>
 
-        <!-- Panel 2: Guardados -->
-        <div id="profileTab-saved" class="profile-subtab-panel hidden space-y-3">
-          <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <span class="badge-course">Cálculo y Física Aplicada</span>
-              <h4 class="text-sm font-bold text-slate-900 mt-1">Solucionario de Examen Final: Campos Magnéticos e Integrales de Línea</h4>
-              <p class="text-xs text-slate-400 mt-0.5">Autor: Camila Navarro • 6.2 MB (PDF)</p>
-            </div>
-            <button onclick="showToastNotification('Descarga iniciada', 'Solucionario de Examen Final')" class="btn-primary text-xs py-1.5">Descargar</button>
-          </div>
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <span class="flex items-center gap-1.5"><i class="ri-time-line text-slate-400"></i> Horario de mentorías: <strong>Martes y jueves · 6:00 p.m.</strong></span>
+          <span class="text-emerald-600 font-semibold flex items-center gap-1"><i class="ri-checkbox-circle-fill"></i> Perfil Verificado</span>
         </div>
-
-        <!-- Panel 3: Insignias -->
-        <div id="profileTab-badges" class="profile-subtab-panel hidden grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div class="bg-white p-4 rounded-xl border border-slate-200 text-center">
-            <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-2 text-2xl">
-              <i class="ri-trophy-fill"></i>
-            </div>
-            <h5 class="text-xs font-bold text-slate-900">Top 5 Semestral</h5>
-            <p class="text-[10px] text-slate-400 mt-1">Líder en aportes académicos</p>
-          </div>
-          <div class="bg-white p-4 rounded-xl border border-slate-200 text-center">
-            <div class="w-12 h-12 bg-blue-50 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-2 text-2xl">
-              <i class="ri-star-smile-fill"></i>
-            </div>
-            <h5 class="text-xs font-bold text-slate-900">Excelencia de Pares</h5>
-            <p class="text-[10px] text-slate-400 mt-1">Promedio de valoración mayor a 4.8</p>
-          </div>
-          <div class="bg-white p-4 rounded-xl border border-slate-200 text-center">
-            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2 text-2xl">
-              <i class="ri-download-2-fill"></i>
-            </div>
-            <h5 class="text-xs font-bold text-slate-900">4,000+ Descargas</h5>
-            <p class="text-[10px] text-slate-400 mt-1">Impacto comunitario extendido</p>
-          </div>
-          <div class="bg-white p-4 rounded-xl border border-slate-200 text-center">
-            <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-2 text-2xl">
-              <i class="ri-shield-check-fill"></i>
-            </div>
-            <h5 class="text-xs font-bold text-slate-900">Tutora Certificada</h5>
-            <p class="text-[10px] text-slate-400 mt-1">Asesorías pares validadas</p>
-          </div>
-        </div>
-
       </div>
+
+      <!-- Pestañas y Contenido de Aportes -->
+      <div class="space-y-3">
+        <h3 class="text-sm font-bold text-slate-900">Mis recursos compartidos</h3>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-red-50 text-red-700">Cálculo I</span>
+              <span class="text-xs font-bold text-slate-900">Guía completa de límites y derivadas</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">PDF (3.2 MB) · 248 descargas · ★ 4.9</p>
+          </div>
+          <button onclick="handleDownloadResource(101, 'Guía completa de límites y derivadas', '3.2 MB')" class="btn-secondary text-xs">
+            <i class="ri-download-2-line"></i> Descargar
+          </button>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-blue-700">Programación II</span>
+              <span class="text-xs font-bold text-slate-900">Patrones de diseño explicados con ejemplos</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">PDF + Java (2.1 MB) · 191 descargas · ★ 4.8</p>
+          </div>
+          <button onclick="handleDownloadResource(102, 'Patrones de diseño explicados', '2.1 MB')" class="btn-secondary text-xs">
+            <i class="ri-download-2-line"></i> Descargar
+          </button>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-700">Bases de Datos</span>
+              <span class="text-xs font-bold text-slate-900">Modelo entidad-relación: proyecto final</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">PDF + SQL (1.8 MB) · 132 descargas · ★ 4.8</p>
+          </div>
+          <button onclick="handleDownloadResource(103, 'Modelo entidad-relación proyecto final', '1.8 MB')" class="btn-secondary text-xs">
+            <i class="ri-download-2-line"></i> Descargar
+          </button>
+        </div>
+      </div>
+
     </div>
 
   </main>
 
   <!-- ======================================================== -->
-  <!-- PIE DE PÁGINA PROFESIONAL / FOOTER                       -->
+  <!-- MODAL: PUBLICAR RECURSO (FIGMA FIGURA 15)                -->
   <!-- ======================================================== -->
-  <footer class="app-footer">
-    
-    <!-- Newsletter / Alertas Académicas -->
-    <div class="border-b border-slate-200/80 bg-slate-50/60 py-8">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="max-w-lg">
-            <div class="mb-1.5">
-              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Boletín de novedades</span>
-            </div>
-            <h3 class="text-base sm:text-lg font-bold text-slate-900">Recibe avisos cuando se publiquen nuevos exámenes o apuntes</h3>
-          </div>
-          <form onsubmit="handleNewsletterSubmit(event)" class="flex items-center gap-2 max-w-md w-full">
-            <input 
-              id="newsletterEmailInput"
-              required 
-              type="email" 
-              placeholder="Ingresa tu correo institucional..." 
-              class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-brand-600 outline-none bg-white"
-            >
-            <button type="submit" class="btn-primary text-xs py-2.5 px-4 shrink-0">
-              <span>Suscribirme</span>
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- Directorio en 4 Columnas -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-        
-        <!-- Columna 1 y 2: Identidad y Misión -->
-        <div class="lg:col-span-2 space-y-4">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white">
-              <i class="ri-graduation-cap-fill text-base"></i>
-            </div>
-            <span class="text-base font-bold text-slate-900">Edu<span class="text-brand-600">Conecta</span></span>
-          </div>
-          <p class="text-xs text-slate-500 leading-relaxed max-w-sm">
-            Repositorio y comunidad estudiantil para compartir materiales de estudio, exámenes resueltos y asesorías entre compañeros.
-          </p>
-        </div>
-
-        <!-- Columna 2: Recursos Académicos -->
+  <div id="uploadResourceModal" class="modal-backdrop hidden" onclick="if(event.target === this) closeUploadModal()">
+    <div class="modal-dialog p-6 max-w-lg">
+      <div class="flex items-start justify-between pb-3 border-b border-slate-100">
         <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 mb-3.5">Recursos</h4>
-          <ul class="space-y-2">
-            <li><button onclick="AppRouter.navigate('repositorio')" class="footer-link">Repositorio Abierto</button></li>
-            <li><button onclick="AppRouter.navigate('repositorio')" class="footer-link">Exámenes Pasados</button></li>
-            <li><button onclick="AppRouter.navigate('repositorio')" class="footer-link">Guías de Laboratorio</button></li>
-            <li><button onclick="AppRouter.navigate('repositorio')" class="footer-link">Códigos Fuente & Git</button></li>
-            <li><button onclick="openUploadModal()" class="footer-link font-semibold text-brand-600">Subir Documento</button></li>
-          </ul>
+          <span class="text-[10px] font-bold text-red-600 tracking-wider uppercase">COMPARTIR CONOCIMIENTO</span>
+          <h3 class="font-extrabold text-slate-900 text-lg mt-0.5">Publicar un recurso</h3>
         </div>
-
-        <!-- Columna 3: Tutorías y Comunidad -->
-        <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 mb-3.5">Comunidad</h4>
-          <ul class="space-y-2">
-            <li><button onclick="AppRouter.navigate('mapa-expertos')" class="footer-link">Mapa de Expertos</button></li>
-            <li><button onclick="AppRouter.navigate('comunidades')" class="footer-link">Salas de Estudio</button></li>
-            <li><button onclick="AppRouter.navigate('comunidades')" class="footer-link">Maratones de Repaso</button></li>
-            <li><button onclick="showToastNotification('Postulación', 'Formulario de mentor disponible en el Mapa de Expertos')" class="footer-link">Ser Tutor Par</button></li>
-            <li><button onclick="AppRouter.navigate('perfil')" class="footer-link">Ranking de Líderes</button></li>
-          </ul>
-        </div>
-
-        <!-- Columna 4: Normas y Soporte -->
-        <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 mb-3.5">Marco y Ayuda</h4>
-          <ul class="space-y-2">
-            <li><button onclick="showToastNotification('Guía APA 7', 'Revisa la sección de citación académica responsable')" class="footer-link">Código de Citación Ética</button></li>
-            <li><button onclick="showToastNotification('Términos', 'Material bajo licencia Creative Commons BY-NC 4.0')" class="footer-link">Licencia de Material</button></li>
-            <li><button onclick="showToastNotification('Privacidad', 'Tus datos académicos son privados y protegidos')" class="footer-link">Privacidad de Datos</button></li>
-            <li><button onclick="showToastNotification('Soporte', 'Escríbenos a soporte@educonecta.org')" class="footer-link">Reportar Inconsistencia</button></li>
-            <li><button onclick="showToastNotification('API', 'Documentación para desarrolladores próximamente')" class="footer-link">API para Estudiantes</button></li>
-          </ul>
-        </div>
-
-      </div>
-
-      <!-- Barra Inferior de Copyright y Redes Sociales -->
-      <div class="mt-12 pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-        <p>© 2026 EduConecta. Desarrollado con dedicación por la comunidad universitaria.</p>
-
-        <!-- Redes Sociales Oficiales -->
-        <div class="flex items-center gap-2">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="GitHub">
-            <i class="ri-github-fill"></i>
-          </a>
-          <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="Discord Estudiantil">
-            <i class="ri-discord-fill"></i>
-          </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="LinkedIn">
-            <i class="ri-linkedin-fill"></i>
-          </a>
-          <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="Canal de Telegram">
-            <i class="ri-telegram-fill"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ======================================================== -->
-  <!-- MODAL: INICIAR SESIÓN / REGISTRO INSTITUCIONAL UTP       -->
-  <!-- ======================================================== -->
-  <div id="authModal" class="modal-backdrop hidden" onclick="if(event.target === this) closeAuthModal()">
-    <div class="modal-dialog overflow-hidden max-w-md shadow-2xl rounded-2xl border border-slate-200">
-      
-      <!-- Banner Cabecera Institucional UTP -->
-      <div class="bg-gradient-to-r from-brand-800 via-brand-700 to-brand-600 p-6 text-white relative">
-        <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
+        <button onclick="closeUploadModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
           <i class="ri-close-line text-xl"></i>
         </button>
+      </div>
 
-        <div class="flex items-center gap-2.5 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-white/15 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
-            <i class="ri-graduation-cap-fill text-lg"></i>
+      <form onsubmit="handleUploadSubmit(event)" class="mt-4 space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Título del recurso *</label>
+          <input required id="uploadTitleInput" type="text" placeholder="Ej. Guía completa de Integrales Triples" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-200 focus:border-red-600 outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Descripción breve *</label>
+          <textarea id="uploadDescInput" rows="2" placeholder="Explica de forma concisa qué conceptos o ejercicios contiene..." class="w-full text-xs px-3.5 py-2 rounded-lg border border-slate-200 focus:border-red-600 outline-none resize-none"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Curso *</label>
+            <select id="uploadCourseSelect" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:border-red-600 outline-none bg-white">
+              <option value="Algoritmos y Estructura de Datos">Algoritmos y Estructuras</option>
+              <option value="Cálculo y Física Aplicada">Cálculo y Física</option>
+              <option value="Sistemas Operativos">Sistemas Operativos</option>
+              <option value="Bases de Datos">Bases de Datos</option>
+              <option value="Redes y Telecomunicaciones">Redes y Telecomunicaciones</option>
+            </select>
           </div>
           <div>
-            <h3 class="font-extrabold text-base tracking-tight leading-tight">Edu<span class="text-blue-200">Conecta</span></h3>
-            <p class="text-[11px] text-blue-100 font-medium">Comunidad Académica UTP</p>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Ciclo *</label>
+            <select id="uploadCycleSelect" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:border-red-600 outline-none bg-white">
+              <option value="Ciclo I">Ciclo I</option>
+              <option value="Ciclo II">Ciclo II</option>
+              <option value="Ciclo III">Ciclo III</option>
+              <option value="Ciclo IV" selected>Ciclo IV</option>
+              <option value="Ciclo V">Ciclo V</option>
+              <option value="Ciclo VI">Ciclo VI</option>
+              <option value="Ciclo VII">Ciclo VII</option>
+            </select>
           </div>
         </div>
 
-        <p class="text-xs text-blue-100 mt-2 font-medium">Accede a bancos de exámenes, apuntes compartidos y asesorías personalizadas entre pares.</p>
-      </div>
-
-      <!-- Pestañas: Iniciar Sesión / Crear Cuenta -->
-      <div class="flex border-b border-slate-200 bg-slate-50/70">
-        <button id="authTabLogin" onclick="switchAuthTab('login')" class="auth-tab-btn active">
-          <i class="ri-login-box-line mr-1"></i> Iniciar Sesión
-        </button>
-        <button id="authTabRegister" onclick="switchAuthTab('register')" class="auth-tab-btn">
-          <i class="ri-user-add-line mr-1"></i> Crear Cuenta
-        </button>
-      </div>
-
-      <div class="p-6">
-        <!-- Error Alert Container -->
-        <div id="authAlertError" class="hidden mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
-          <i class="ri-error-warning-fill text-base shrink-0"></i>
-          <span id="authAlertErrorMsg" class="font-medium">Error al iniciar sesión</span>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Docente de la asignatura</label>
+            <input id="uploadTeacherInput" type="text" placeholder="Ej. Ing. Ramos" class="w-full text-xs px-3.5 py-2 rounded-lg border border-slate-200 focus:border-red-600 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Tipo de recurso *</label>
+            <select id="uploadCategorySelect" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:border-red-600 outline-none bg-white">
+              <option value="Apuntes y Resúmenes">Apuntes y Resúmenes</option>
+              <option value="Exámenes y Prácticas">Exámenes Pasados</option>
+              <option value="Guías de Laboratorio">Guías de Laboratorio</option>
+              <option value="Proyectos y Código">Proyectos y Código</option>
+            </select>
+          </div>
         </div>
 
-        <!-- FORMULARIO 1: INICIAR SESIÓN -->
-        <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1.5">Correo Institucional o Código UTP</label>
-            <div class="auth-input-group">
-              <input required id="loginIdentifier" type="text" placeholder="ej. valeria.mendoza@utp.edu.pe o U20210042" class="auth-input">
-              <i class="ri-mail-line auth-icon"></i>
-            </div>
-          </div>
+        <!-- Caja de Drag and Drop de archivo (Figura 15) -->
+        <div class="border-2 border-dashed border-slate-200 rounded-xl p-5 text-center hover:border-red-500 transition cursor-pointer bg-slate-50/70" onclick="document.getElementById('uploadFileInput').click()">
+          <input type="file" id="uploadFileInput" class="hidden" onchange="handleFileSelected(this)">
+          <i class="ri-file-upload-line text-2xl text-red-600 mb-1 block"></i>
+          <p id="uploadFileLabel" class="text-xs font-bold text-slate-800">Arrastra tu archivo aquí o haz clic para examinar</p>
+          <p class="text-[11px] text-slate-400 mt-0.5">Formatos admitidos: PDF, DOCX, ZIP, MP4 · Máx. 25 MB</p>
+        </div>
 
-          <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs font-bold text-slate-700">Contraseña</label>
-              <button type="button" onclick="showToastNotification('Recuperación de contraseña', 'Se envió un enlace temporal a tu correo UTP.')" class="text-[11px] font-semibold text-brand-600 hover:underline">¿Olvidaste tu contraseña?</button>
-            </div>
-            <div class="auth-input-group">
-              <input required id="loginPassword" type="password" placeholder="••••••••" class="auth-input pr-10">
-              <i class="ri-lock-line auth-icon"></i>
-              <button type="button" onclick="togglePasswordVisibility('loginPassword', this)" class="absolute right-3 text-slate-400 hover:text-slate-600 p-1">
-                <i class="ri-eye-line text-sm"></i>
-              </button>
-            </div>
-          </div>
+        <!-- Checkbox de autoría y originalidad (Figura 15) -->
+        <div class="flex items-start gap-2 pt-1 text-xs text-slate-600">
+          <input required type="checkbox" id="uploadCopyrightCheck" checked class="mt-0.5 rounded text-red-600 focus:ring-red-500">
+          <label for="uploadCopyrightCheck" class="text-[11px] leading-tight select-none cursor-pointer">
+            Declaro que este material es de mi autoría o de libre distribución académica para fines educativos.
+          </label>
+        </div>
 
-          <div class="flex items-center justify-between text-xs text-slate-600 pt-1">
-            <label class="flex items-center gap-2 cursor-pointer select-none">
-              <input type="checkbox" checked class="rounded text-brand-600 focus:ring-brand-500 w-4 h-4 border-slate-300">
-              <span class="text-[12px] font-medium">Recordar sesión</span>
-            </label>
-          </div>
-
-          <button id="loginSubmitBtn" type="submit" class="btn-primary w-full py-2.5 text-xs font-bold shadow-md flex items-center justify-center gap-2">
-            <i class="ri-login-circle-line text-base"></i>
-            <span>Acceder a la Plataforma</span>
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+          <button type="button" onclick="closeUploadModal()" class="btn-secondary text-xs">Cancelar</button>
+          <button type="submit" class="btn-primary text-xs py-2 px-4">
+            <span>Enviar a revisión</span>
           </button>
-
-          <!-- Accesos Rápidos de Prueba (Demo) -->
-          <div class="pt-4 border-t border-slate-100">
-            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Accesos Rápidos Demo (1 clic):</p>
-            <div class="grid grid-cols-2 gap-2">
-              <button type="button" onclick="fillQuickDemoLogin('valeria.mendoza@utp.edu.pe', 'utp12345')" class="auth-demo-chip text-left flex items-center justify-between">
-                <div>
-                  <p class="text-xs font-bold text-slate-800 leading-tight">Valeria M.</p>
-                  <p class="text-[10px] text-slate-400">Estudiante Oro</p>
-                </div>
-                <i class="ri-arrow-right-s-line text-slate-400 text-sm"></i>
-              </button>
-              <button type="button" onclick="fillQuickDemoLogin('diego.valenzuela@utp.edu.pe', 'utp12345')" class="auth-demo-chip text-left flex items-center justify-between">
-                <div>
-                  <p class="text-xs font-bold text-slate-800 leading-tight">Diego V.</p>
-                  <p class="text-[10px] text-slate-400">Tutor Par</p>
-                </div>
-                <i class="ri-arrow-right-s-line text-slate-400 text-sm"></i>
-              </button>
-            </div>
-          </div>
-        </form>
-
-        <!-- FORMULARIO 2: CREAR CUENTA -->
-        <form id="registerForm" onsubmit="handleRegisterSubmit(event)" class="space-y-3.5 hidden">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Nombre Completo</label>
-            <div class="auth-input-group">
-              <input required id="registerName" type="text" placeholder="Ej. Carlos Paredes" class="auth-input">
-              <i class="ri-user-line auth-icon"></i>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2.5">
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Código UTP</label>
-              <div class="auth-input-group">
-                <input required id="registerCode" type="text" placeholder="Ej. U21204891" class="auth-input">
-                <i class="ri-id-card-line auth-icon"></i>
-              </div>
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Ciclo</label>
-              <div class="auth-input-group">
-                <select id="registerCycle" class="auth-input">
-                  <option value="Ciclo I">Ciclo I</option>
-                  <option value="Ciclo II">Ciclo II</option>
-                  <option value="Ciclo III">Ciclo III</option>
-                  <option value="Ciclo IV" selected>Ciclo IV</option>
-                  <option value="Ciclo V">Ciclo V</option>
-                  <option value="Ciclo VI">Ciclo VI</option>
-                  <option value="Ciclo VII">Ciclo VII</option>
-                  <option value="Ciclo VIII">Ciclo VIII</option>
-                </select>
-                <i class="ri-calendar-line auth-icon"></i>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Carrera Profesional</label>
-            <div class="auth-input-group">
-              <select id="registerDegree" class="auth-input">
-                <option value="Ingeniería de Sistemas e Informática">Ingeniería de Sistemas e Informática</option>
-                <option value="Ingeniería de Software">Ingeniería de Software</option>
-                <option value="Ingeniería Industrial">Ingeniería Industrial</option>
-                <option value="Ciencias de la Computación">Ciencias de la Computación</option>
-                <option value="Ingeniería de Redes y Comunicaciones">Ingeniería de Redes y Comunicaciones</option>
-              </select>
-              <i class="ri-book-mark-line auth-icon"></i>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Correo Institucional UTP</label>
-            <div class="auth-input-group">
-              <input required id="registerEmail" type="email" placeholder="carlos.paredes@utp.edu.pe" class="auth-input">
-              <i class="ri-mail-line auth-icon"></i>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Contraseña (mínimo 6 caracteres)</label>
-            <div class="auth-input-group">
-              <input required id="registerPassword" type="password" minlength="6" placeholder="••••••••" class="auth-input pr-10">
-              <i class="ri-lock-line auth-icon"></i>
-              <button type="button" onclick="togglePasswordVisibility('registerPassword', this)" class="absolute right-3 text-slate-400 hover:text-slate-600 p-1">
-                <i class="ri-eye-line text-sm"></i>
-              </button>
-            </div>
-          </div>
-
-          <button id="registerSubmitBtn" type="submit" class="btn-primary w-full py-2.5 text-xs font-bold shadow-md flex items-center justify-center gap-2 mt-2">
-            <i class="ri-user-add-line text-base"></i>
-            <span>Crear mi Cuenta (+100 pts)</span>
-          </button>
-        </form>
-      </div>
-
+        </div>
+      </form>
     </div>
   </div>
 
   <!-- ======================================================== -->
-  <!-- MODAL: SOLICITAR ASESORÍA PAR                            -->
+  <!-- MODAL: VISTA PREVIA MULTIMEDIA (YOUTUBE / REPO / PDF)    -->
   <!-- ======================================================== -->
-  <div id="bookingModal" class="modal-backdrop hidden">
-    <div class="modal-dialog p-6">
+  <div id="resourcePreviewModal" class="modal-backdrop hidden" onclick="if(event.target === this) closeMediaModal()">
+    <div class="modal-dialog overflow-hidden max-w-2xl shadow-2xl rounded-2xl border border-slate-200 bg-white">
+      <div id="resourcePreviewContent" class="p-0">
+        <!-- Renderizado dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: AGENDAR ASESORÍA PAR                              -->
+  <!-- ======================================================== -->
+  <div id="bookingModal" class="modal-backdrop hidden" onclick="if(event.target === this) closeBookingModal()">
+    <div class="modal-dialog p-6 max-w-md">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
         <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center">
+          <div class="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center">
             <i class="ri-calendar-check-line text-lg"></i>
           </div>
           <h3 class="font-bold text-slate-900 text-base">Solicitar Asesoría Par</h3>
@@ -1214,14 +856,14 @@
         </p>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Tema o Ejercicio a Revisar</label>
-          <input required id="bookingTopicInput" type="text" placeholder="Ej. Duda en rotaciones dobles de Árboles AVL" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none focus:border-brand-600">
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Tema o Consulta</label>
+          <input required id="bookingTopicInput" type="text" placeholder="Ej. Ejercicio de Grafos o Álgebra" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-200 outline-none focus:border-red-600">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Día Preferido</label>
-            <select id="bookingDaySelect" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 outline-none focus:border-brand-600">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Día</label>
+            <select id="bookingDaySelect" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 outline-none focus:border-red-600 bg-white">
               <option value="Próximo Miércoles">Próximo Miércoles</option>
               <option value="Próximo Jueves">Próximo Jueves</option>
               <option value="Próximo Sábado">Próximo Sábado</option>
@@ -1229,99 +871,128 @@
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-700 mb-1">Turno</label>
-            <select id="bookingTimeSelect" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 outline-none focus:border-brand-600">
+            <select id="bookingTimeSelect" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 outline-none focus:border-red-600 bg-white">
               <option value="17:00 - 19:00">Tarde (17:00 - 19:00)</option>
               <option value="19:00 - 21:00">Noche (19:00 - 21:00)</option>
             </select>
           </div>
         </div>
 
-        <div class="flex items-center justify-end gap-2 pt-3">
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
           <button type="button" onclick="closeBookingModal()" class="btn-secondary text-xs">Cancelar</button>
-          <button type="submit" class="btn-primary text-xs">Enviar Solicitud</button>
+          <button type="submit" class="btn-primary text-xs py-2 px-4">Enviar Solicitud</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- ======================================================== -->
-  <!-- MODAL: SUBIR RECURSO                                     -->
+  <!-- MODAL: LOGIN / REGISTRO INSTITUCIONAL                    -->
   <!-- ======================================================== -->
-  <div id="uploadResourceModal" class="modal-backdrop hidden">
-    <div class="modal-dialog p-6">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center">
-            <i class="ri-file-upload-line text-lg"></i>
-          </div>
-          <h3 class="font-bold text-slate-900 text-base">Aportar un Recurso</h3>
-        </div>
-        <button onclick="closeUploadModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+  <div id="authModal" class="modal-backdrop hidden" onclick="if(event.target === this) closeAuthModal()">
+    <div class="modal-dialog overflow-hidden max-w-md shadow-2xl rounded-2xl border border-slate-200">
+      
+      <div class="bg-red-700 p-6 text-white relative">
+        <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
           <i class="ri-close-line text-xl"></i>
+        </button>
+
+        <div class="flex items-center gap-2.5 mb-2">
+          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white">
+            <span class="font-extrabold text-base">E</span>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base tracking-tight leading-tight">EduConecta</h3>
+            <p class="text-[11px] text-red-100 font-medium">Plataforma Académica</p>
+          </div>
+        </div>
+
+        <p class="text-xs text-red-100 mt-2 font-medium">Inicia sesión con tu código o correo institucional para acceder a recursos y salas de estudio.</p>
+      </div>
+
+      <div class="flex border-b border-slate-200 bg-slate-50/70">
+        <button id="authTabLogin" onclick="switchAuthTab('login')" class="auth-tab-btn active flex-1 py-2.5 text-xs font-bold text-center">
+          <i class="ri-login-box-line mr-1"></i> Iniciar Sesión
+        </button>
+        <button id="authTabRegister" onclick="switchAuthTab('register')" class="auth-tab-btn flex-1 py-2.5 text-xs font-bold text-center text-slate-500">
+          <i class="ri-user-add-line mr-1"></i> Crear Cuenta
         </button>
       </div>
 
-      <form onsubmit="handleUploadSubmit(event)" class="mt-4 space-y-3.5">
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Título del Recurso</label>
-          <input required id="uploadTitleInput" type="text" placeholder="Ej. Solucionario Examen Parcial - Algoritmos" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-brand-600 outline-none">
+      <div class="p-6">
+        <div id="authAlertError" class="hidden mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+          <i class="ri-error-warning-fill text-base shrink-0"></i>
+          <span id="authAlertErrorMsg" class="font-medium">Error de credenciales</span>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Curso</label>
-            <select id="uploadCourseSelect" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-brand-600 outline-none">
-              <option value="Algoritmos y Estructura de Datos">Algoritmos y Estructuras</option>
-              <option value="Cálculo y Física Aplicada">Cálculo y Física</option>
-              <option value="Sistemas Operativos">Sistemas Operativos</option>
-              <option value="Bases de Datos">Bases de Datos</option>
-            </select>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">Correo o Código Estudiantil</label>
+            <input required id="loginIdentifier" type="text" placeholder="alex.mendoza@educonecta.edu o E20210042" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-200 focus:border-red-600 outline-none">
           </div>
+
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Ciclo</label>
-            <select id="uploadCycleSelect" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-brand-600 outline-none">
-              <option value="Ciclo III">Ciclo III</option>
-              <option value="Ciclo IV">Ciclo IV</option>
-              <option value="Ciclo V">Ciclo V</option>
-              <option value="Ciclo VI">Ciclo VI</option>
-              <option value="Ciclo VII">Ciclo VII</option>
-            </select>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-bold text-slate-700">Contraseña</label>
+              <button type="button" onclick="showToastNotification('Recuperación', 'Revisa tu correo institucional')" class="text-[11px] font-semibold text-red-600 hover:underline">¿Olvidaste tu contraseña?</button>
+            </div>
+            <input required id="loginPassword" type="password" placeholder="••••••••" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-200 focus:border-red-600 outline-none">
           </div>
-        </div>
 
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Tipo de Material</label>
-          <select id="uploadCategorySelect" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-brand-600 outline-none">
-            <option value="Exámenes y Prácticas">Exámenes y Prácticas</option>
-            <option value="Guías de Laboratorio">Guías de Laboratorio</option>
-            <option value="Apuntes y Resúmenes">Apuntes y Resúmenes</option>
-            <option value="Proyectos y Código">Proyectos y Código</option>
-          </select>
-        </div>
+          <button id="loginSubmitBtn" type="submit" class="btn-primary w-full py-2.5 text-xs font-bold flex items-center justify-center gap-2">
+            <i class="ri-login-circle-line text-base"></i>
+            <span>Acceder a la Plataforma</span>
+          </button>
 
-        <div class="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center hover:border-brand-500 transition cursor-pointer bg-slate-50/50" onclick="document.getElementById('uploadFileInput').click()">
-          <input type="file" id="uploadFileInput" class="hidden" onchange="handleFileSelected(this)">
-          <i class="ri-upload-2-line text-2xl text-slate-400 mb-1 block"></i>
-          <p id="uploadFileLabel" class="text-xs font-semibold text-slate-700">Arrastra tu archivo PDF, ZIP o DOCX aquí</p>
-          <p class="text-[11px] text-slate-400 mt-0.5">Tamaño máximo de archivo: 25 MB</p>
-        </div>
+          <div class="pt-3 border-t border-slate-100">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Acceso rápido demo:</p>
+            <button type="button" onclick="fillQuickDemoLogin('alex.mendoza@educonecta.edu', 'demo12345')" class="w-full text-left p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs flex items-center justify-between">
+              <div>
+                <p class="font-bold text-slate-800">Alex Mendoza</p>
+                <p class="text-[10px] text-slate-400">VI Ciclo · Sistemas</p>
+              </div>
+              <i class="ri-arrow-right-s-line text-slate-400"></i>
+            </button>
+          </div>
+        </form>
 
-        <div class="flex items-center justify-end gap-2 pt-2">
-          <button type="button" onclick="closeUploadModal()" class="btn-secondary text-xs">Cancelar</button>
-          <button type="submit" class="btn-primary text-xs">Publicar (+50 pts)</button>
-        </div>
-      </form>
-    </div>
-  </div>
+        <form id="registerForm" onsubmit="handleRegisterSubmit(event)" class="space-y-3 hidden">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nombre Completo</label>
+            <input required id="registerName" type="text" placeholder="Ej. Carlos Paredes" class="w-full text-xs px-3.5 py-2 rounded-lg border border-slate-200 focus:border-red-600 outline-none">
+          </div>
 
-  <!-- ======================================================== -->
-  <!-- MODAL: VISTA PREVIA MULTIMEDIA (YOUTUBE / REPO / PDF)    -->
-  <!-- ======================================================== -->
-  <div id="resourcePreviewModal" class="modal-backdrop hidden" onclick="if(event.target === this) closeMediaModal()">
-    <div class="modal-dialog overflow-hidden max-w-2xl shadow-2xl rounded-2xl border border-slate-200 bg-white">
-      <div id="resourcePreviewContent" class="p-0">
-        <!-- Renderizado dinámicamente -->
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Código Estudiantil</label>
+              <input required id="registerCode" type="text" placeholder="E21204891" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:border-red-600 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Ciclo</label>
+              <select id="registerCycle" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:border-red-600 outline-none bg-white">
+                <option value="Ciclo IV" selected>Ciclo IV</option>
+                <option value="Ciclo V">Ciclo V</option>
+                <option value="Ciclo VI">Ciclo VI</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Correo Institucional</label>
+            <input required id="registerEmail" type="email" placeholder="carlos.paredes@educonecta.edu" class="w-full text-xs px-3.5 py-2 rounded-lg border border-slate-200 focus:border-red-600 outline-none">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Contraseña</label>
+            <input required id="registerPassword" type="password" minlength="6" placeholder="••••••••" class="w-full text-xs px-3.5 py-2 rounded-lg border border-slate-200 focus:border-red-600 outline-none">
+          </div>
+
+          <button id="registerSubmitBtn" type="submit" class="btn-primary w-full py-2.5 text-xs font-bold mt-2">
+            <span>Crear mi Cuenta (+100 pts)</span>
+          </button>
+        </form>
       </div>
+
     </div>
   </div>
 
@@ -1340,9 +1011,7 @@
     </div>
   </div>
 
-  <!-- ======================================================== -->
-  <!-- SCRIPTS MODULARES POR CARPETA                            -->
-  <!-- ======================================================== -->
+  <!-- Scripts Modulares -->
   <script src="js/data.js"></script>
   <script src="js/api.js"></script>
   <script src="js/components.js"></script>

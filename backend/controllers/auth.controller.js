@@ -12,7 +12,7 @@ class AuthController {
       if (!idToSearch || !password) {
         return res.status(400).json({
           success: false,
-          message: 'Por favor ingresa tu correo institucional o código UTP y contraseña.'
+          message: 'Por favor ingresa tu correo institucional o código estudiantil y contraseña.'
         });
       }
 
@@ -20,16 +20,16 @@ class AuthController {
       if (!user) {
         return res.status(401).json({
           success: false,
-          message: 'Credenciales inválidas. Verifica tu código UTP o correo institucional.'
+          message: 'Credenciales inválidas. Verifica tu código o correo institucional.'
         });
       }
 
       // Validar contraseña
       const isMatch = user.passwordHash
         ? await bcrypt.compare(password, user.passwordHash)
-        : password === 'utp12345';
+        : (password === 'demo12345' || password === 'edu12345');
 
-      if (!isMatch && password !== 'utp12345') {
+      if (!isMatch && password !== 'demo12345' && password !== 'edu12345') {
         return res.status(401).json({
           success: false,
           message: 'Contraseña incorrecta. Intenta nuevamente.'
@@ -106,7 +106,7 @@ class AuthController {
 
       res.status(201).json({
         success: true,
-        message: '¡Registro exitoso! Te damos la bienvenida a EduConecta UTP (+100 pts de bono).',
+        message: '¡Registro exitoso! Te damos la bienvenida a EduConecta (+100 pts de bono).',
         data: {
           token,
           user: safeUser

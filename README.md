@@ -83,7 +83,7 @@ node test-backend.js
 - `GET /api/health` - Verificación del estado y uptime del servidor
 
 ### Autenticación y Cuentas (`/api/auth`)
-- `POST /api/auth/login` - Iniciar sesión (correo institucional `@utp.edu.pe` o código UTP + contraseña)
+- `POST /api/auth/login` - Iniciar sesión (correo institucional o código estudiantil + contraseña)
 - `POST /api/auth/register` - Registro de nuevo estudiante con bono de bienvenida (+100 pts)
 - `GET /api/auth/me` - Obtener datos del usuario autenticado (requiere token JWT)
 - `POST /api/auth/logout` - Cierre de sesión

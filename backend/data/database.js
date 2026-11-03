@@ -240,7 +240,7 @@ class Database {
       mentorId: bookingData.mentorId || null,
       mentorName: bookingData.mentorName || 'Tutor Par',
       studentName: bookingData.studentName || this.data.profile.name,
-      studentEmail: bookingData.studentEmail || 'usuario@utp.edu.pe',
+      studentEmail: bookingData.studentEmail || 'usuario@educonecta.edu',
       topic: bookingData.topic || 'Dudas generales del curso',
       date: bookingData.date || new Date().toISOString().split('T')[0],
       time: bookingData.time || '18:00',

@@ -1,19 +1,22 @@
 /* ==========================================================================
-   EduConecta UTP - Estilos del Sistema
+   EduConecta - Prototipo Figma Oficial
    ========================================================================== */
 
 :root {
-  --color-primary: #0056b3;
-  --color-primary-hover: #004494;
-  --color-primary-active: #003370;
-  --color-primary-light: #eff6ff;
-  --color-primary-border: #bfdbfe;
+  --color-primary: #dc2626;         /* Rojo institucional EduConecta */
+  --color-primary-hover: #b91c1c;
+  --color-primary-active: #991b1b;
+  --color-primary-light: #fef2f2;
+  --color-primary-border: #fecaca;
   
-  --color-bg: #f8fafc;
+  --color-sidebar-bg: #111315;
+  --color-sidebar-border: #202328;
+  --color-sidebar-text: #94a3b8;
+  --color-sidebar-hover: #1e2227;
+
+  --color-bg: #f8f9fb;
   --color-surface: #ffffff;
-  --color-surface-muted: #f1f5f9;
   --color-border: #e2e8f0;
-  --color-border-subtle: #f1f5f9;
   
   --color-text-main: #0f172a;
   --color-text-muted: #475569;
@@ -23,13 +26,13 @@
   --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
   --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
-  --shadow-hover: 0 8px 16px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
   
   --radius-xs: 6px;
   --radius-sm: 8px;
   --radius-md: 10px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+  --radius-2xl: 20px;
 }
 
 /* Base */
@@ -66,157 +69,180 @@ body {
   background: #94a3b8;
 }
 
-/* Elementos interactivos */
-button, 
-.btn-primary, 
-.btn-secondary, 
-.format-filter-pill, 
-.nav-link-btn,
-.auth-demo-chip {
-  touch-action: manipulation;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
-}
-
-/* Header */
-.app-header {
-  position: sticky;
+/* Sidebar Figma */
+.figma-sidebar {
+  width: 250px;
+  background-color: var(--color-sidebar-bg);
+  border-right: 1px solid var(--color-sidebar-border);
+  position: fixed;
   top: 0;
-  z-index: 40;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--color-border);
-}
-
-/* Hero Section */
-.hero-academic-bg {
-  background-color: #ffffff;
-  border-bottom: 1px solid var(--color-border);
-}
-
-/* Navegación */
-.nav-link-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 13px;
-  border-radius: var(--radius-md);
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--color-text-muted);
-  text-decoration: none;
-  cursor: pointer;
-  border: 1px solid transparent;
-  user-select: none;
-}
-
-.nav-link-btn:hover {
-  color: var(--color-text-main);
-  background-color: #f1f5f9;
-}
-
-.nav-link-btn.active {
-  color: var(--color-primary);
-  background-color: var(--color-primary-light);
-  border-color: var(--color-primary-border);
-  font-weight: 600;
-}
-
-/* Búsqueda rápida en cabecera */
-.header-search-trigger {
+  bottom: 0;
+  left: 0;
+  z-index: 50;
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: var(--radius-md);
-  color: var(--color-text-subtle);
-  font-size: 12.5px;
-  cursor: pointer;
+  flex-direction: column;
+  transition: transform 0.25s ease;
 }
 
-.header-search-trigger:hover {
-  background-color: #ffffff;
-  color: var(--color-text-muted);
-  border-color: #cbd5e1;
-}
-
-/* Tarjetas de recursos */
-.edu-card {
-  position: relative;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-xs);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.edu-card:hover {
-  border-color: #cbd5e1;
-  box-shadow: var(--shadow-hover);
-}
-
-.edu-card-video:hover {
-  border-color: #fca5a5;
-}
-
-.edu-card-repo:hover {
-  border-color: #cbd5e1;
-}
-
-.edu-card-pdf:hover {
-  border-color: var(--color-primary-border);
-}
-
-/* Ventana de comando para repositorios */
-.terminal-window {
-  background-color: #0f172a;
-  border-radius: var(--radius-md);
-  border: 1px solid #1e293b;
-  overflow: hidden;
-}
-
-.terminal-header {
+.sidebar-nav-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 7px 12px;
-  background-color: #1e293b;
-  border-bottom: 1px solid #334155;
-}
-
-.terminal-body {
   padding: 9px 12px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 11.5px;
-  color: #94a3b8;
+  border-radius: var(--radius-md);
+  color: var(--color-sidebar-text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  user-select: none;
+  border: 1px solid transparent;
 }
 
-/* Badges */
-.badge-course {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
-  font-size: 11.5px;
+.sidebar-nav-item:hover {
+  background-color: var(--color-sidebar-hover);
+  color: #ffffff;
+}
+
+.sidebar-nav-item.active {
+  background-color: var(--color-primary);
+  color: #ffffff;
   font-weight: 600;
-  color: var(--color-primary);
-  background-color: var(--color-primary-light);
-  border: 1px solid var(--color-primary-border);
 }
 
-.badge-cycle {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 8px;
-  border-radius: var(--radius-xs);
+.sidebar-nav-item.active i {
+  color: #ffffff !important;
+}
+
+/* Header Top */
+.figma-topbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-border);
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+/* Figma Hero Card (Figura 13) */
+.figma-hero-card {
+  background: #17181e;
+  border-radius: var(--radius-xl);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+}
+
+.figma-hero-bg-accent {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 260px;
+  height: 260px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.25) 0%, rgba(220, 38, 38, 0.05) 50%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Protocol Banner (Figura 14) */
+.figma-protocol-strip {
+  background-color: #17181e;
+  border: 1px solid #282a32;
+  border-radius: var(--radius-lg);
+  color: #ffffff;
+}
+
+.protocol-step-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-weight: 700;
   font-size: 11px;
-  font-weight: 600;
-  color: #475569;
-  background-color: #f1f5f9;
-  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  shrink: 0;
+}
+
+/* Tarjetas Figma con banner superior coloreado (Figura 14) */
+.figma-resource-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.figma-resource-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-header-banner {
+  height: 120px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.card-header-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+.card-header-blue { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+.card-header-purple { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); }
+.card-header-green { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
+.card-header-amber { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+.card-header-teal { background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%); }
+.card-header-dark { background: linear-gradient(135deg, #334155 0%, #0f172a 100%); }
+
+/* Tarjetas de comunidades Figma (Figura 16) */
+.figma-cop-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.figma-cop-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.cop-banner {
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  color: #ffffff;
+}
+
+.cop-badge-code {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 
 /* Botones */
@@ -233,7 +259,7 @@ button,
   background-color: var(--color-primary);
   border: 1px solid var(--color-primary);
   cursor: pointer;
-  box-shadow: var(--shadow-xs);
+  transition: background-color 0.15s ease;
 }
 
 .btn-primary:hover {
@@ -254,6 +280,7 @@ button,
   background-color: #ffffff;
   border: 1px solid var(--color-border);
   cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-secondary:hover {
@@ -261,12 +288,30 @@ button,
   border-color: #cbd5e1;
 }
 
+.btn-outline-red {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: #ffffff;
+  border: 1px solid var(--color-primary);
+  cursor: pointer;
+}
+
+.btn-outline-red:hover {
+  background-color: var(--color-primary-light);
+}
+
 /* Modales */
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 50;
-  background-color: rgba(15, 23, 42, 0.5);
+  z-index: 60;
+  background-color: rgba(15, 23, 42, 0.55);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   display: flex;
@@ -278,11 +323,13 @@ button,
 .modal-dialog {
   background-color: #ffffff;
   border-radius: var(--radius-xl);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   border: 1px solid var(--color-border);
-  max-width: 520px;
+  max-width: 580px;
   width: 100%;
   overflow: hidden;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 /* Toast */
@@ -290,7 +337,7 @@ button,
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 60;
+  z-index: 70;
   pointer-events: none;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
@@ -309,7 +356,7 @@ button,
   pointer-events: auto;
 }
 
-/* Vistas */
+/* Transición de vista SPA */
 .app-view {
   animation: viewFadeIn 0.15s ease-out;
 }
@@ -317,19 +364,6 @@ button,
 @keyframes viewFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-/* Caja de búsqueda central */
-.search-wrapper {
-  background: #ffffff;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-sm);
-}
-
-.search-wrapper:focus-within {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
 }
 
 /* Dropdowns */
@@ -346,148 +380,7 @@ button,
   overflow: hidden;
 }
 
-/* Footer */
-.app-footer {
-  background-color: #ffffff;
-  border-top: 1px solid var(--color-border);
-}
-
-.footer-link {
-  color: var(--color-text-muted);
-  font-size: 13px;
-  text-decoration: none;
-  cursor: pointer;
-  display: block;
-  transition: color 0.15s ease;
-}
-
-.footer-link:hover {
-  color: var(--color-primary);
-}
-
-.footer-social-icon {
-  width: 32px;
-  height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  color: #64748b;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  transition: all 0.15s ease;
-}
-
-.footer-social-icon:hover {
-  color: var(--color-primary);
-  background-color: var(--color-primary-light);
-  border-color: var(--color-primary-border);
-}
-
-/* Autenticación */
-.auth-tab-btn {
-  flex: 1;
-  padding: 10px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  text-align: center;
-  border-bottom: 2px solid transparent;
-  color: #64748b;
-  transition: all 0.15s ease;
-}
-
-.auth-tab-btn.active {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
-  background: rgba(0, 86, 179, 0.04);
-}
-
-.auth-input-group {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.auth-input-group i.auth-icon {
-  position: absolute;
-  left: 14px;
-  color: #94a3b8;
-  font-size: 16px;
-  pointer-events: none;
-}
-
-.auth-input-group input:focus ~ i.auth-icon,
-.auth-input-group select:focus ~ i.auth-icon {
-  color: var(--color-primary);
-}
-
-.auth-input {
-  width: 100%;
-  padding: 9px 14px 9px 40px;
-  font-size: 13px;
-  border-radius: var(--radius-md);
-  border: 1px solid #cbd5e1;
-  background-color: #ffffff;
-  color: #0f172a;
-  outline: none;
-  transition: border-color 0.15s ease;
-}
-
-.auth-input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
-}
-
-.auth-demo-chip {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: var(--radius-md);
-  padding: 8px 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.auth-demo-chip:hover {
-  background: var(--color-primary-light);
-  border-color: var(--color-primary-border);
-}
-
-/* Píldoras de formato */
-.format-filter-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: var(--radius-md);
-  font-size: 12.5px;
-  font-weight: 500;
-  white-space: nowrap;
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  color: #475569;
-  cursor: pointer;
-  box-shadow: var(--shadow-xs);
-}
-
-.format-filter-pill:hover {
-  background-color: #f8fafc;
-  border-color: #cbd5e1;
-  color: #0f172a;
-}
-
-.format-filter-pill.active {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-  color: #ffffff;
-}
-
-.format-filter-pill.active i {
-  color: #ffffff !important;
-}
-
-/* Menú de usuario */
+/* User Menu Popover */
 .user-menu-popover {
   position: absolute;
   top: calc(100% + 6px);

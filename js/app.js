@@ -513,7 +513,7 @@ async function handleBookingSubmit(event) {
     if (selectedMentorId) {
       await EduConectaAPI.bookMentor(selectedMentorId, {
         studentName: userProfile.name,
-        studentEmail: `${userProfile.handle.replace('@', '')}@utp.edu.pe`,
+        studentEmail: `${userProfile.handle.replace('@', '')}@educonecta.edu`,
         topic: topic,
         date: day,
         time: time
@@ -655,7 +655,10 @@ function renderHeaderAuth() {
               title="Cuenta de ${user.name}"
             >
               <div class="relative">
-                <img src="${user.avatar || userProfile.avatar}" alt="${user.name}" class="w-7 h-7 rounded-full object-cover">
+                ${(user.avatar || userProfile.avatar) ? 
+                  `<img src="${user.avatar || userProfile.avatar}" alt="${user.name}" class="w-7 h-7 rounded-full object-cover">` : 
+                  `<div class="w-7 h-7 rounded-full bg-gradient-to-tr from-[#92734a] to-[#c7a97b] text-white font-bold text-[11px] flex items-center justify-center">${user.initials || 'AM'}</div>`
+                }
                 <span class="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border border-white rounded-full"></span>
               </div>
               <div class="text-left hidden sm:block">
@@ -859,7 +862,7 @@ async function handleRegisterSubmit(event) {
   hideAuthError();
   if (submitBtn) {
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin text-base"></i> Creando cuenta UTP...';
+    submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin text-base"></i> Creando cuenta institucional...';
   }
 
   try {
@@ -878,7 +881,7 @@ async function handleRegisterSubmit(event) {
     renderHeaderAuth();
     closeAuthModal();
 
-    showToastNotification('¡Cuenta creada exitosamente!', `Te has unido a EduConecta UTP (+100 pts de bienvenida)`);
+    showToastNotification('¡Cuenta creada exitosamente!', `Te has unido a EduConecta (+100 pts de bienvenida)`);
   } catch (err) {
     showAuthError(err.message || 'Error al registrar la cuenta.');
   } finally {
