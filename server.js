@@ -52,12 +52,12 @@ app.use(errorHandler);
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
     console.log('====================================================');
-    console.log(`🚀 Servidor EduConecta Backend activo en Node.js`);
-    console.log(`📡 URL Principal: http://localhost:${PORT}`);
-    console.log(`📚 API Health:    http://localhost:${PORT}/api/health`);
-    console.log(`📁 API Recursos:  http://localhost:${PORT}/api/resources`);
-    console.log(`👥 API Tutores:   http://localhost:${PORT}/api/mentors`);
-    console.log(`🌐 API Comunidad: http://localhost:${PORT}/api/communities`);
+    console.log(`Servidor EduConecta Backend activo en Node.js`);
+    console.log(`URL Principal: http://localhost:${PORT}`);
+    console.log(`API Health:    http://localhost:${PORT}/api/health`);
+    console.log(`API Recursos:  http://localhost:${PORT}/api/resources`);
+    console.log(`API Tutores:   http://localhost:${PORT}/api/mentors`);
+    console.log(`API Comunidad: http://localhost:${PORT}/api/communities`);
     console.log('====================================================');
   });
 }

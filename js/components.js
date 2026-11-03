@@ -22,33 +22,33 @@ function renderStarRating(rating) {
   return html;
 }
 
-// Renderizar tarjeta de recurso académico multiformato (Craft Design)
+// Renderizar tarjeta de recurso académico multiformato
 function createResourceCardHtml(item) {
   const type = item.resourceType || 'pdf';
 
   let typeBadgeHtml = '';
   let mediaPreviewHtml = '';
   let ctaButtonsHtml = '';
-  let cardClass = 'edu-card flex flex-col justify-between overflow-hidden group';
+  let cardClass = 'edu-card flex flex-col justify-between overflow-hidden';
 
   if (type === 'video') {
-    cardClass = 'edu-card edu-card-video flex flex-col justify-between overflow-hidden group';
+    cardClass = 'edu-card edu-card-video flex flex-col justify-between overflow-hidden';
     typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-rose-50 text-rose-700 border border-rose-200 shadow-2xs">
-        <i class="ri-youtube-fill text-rose-600 text-xs"></i> Video Clase
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+        <i class="ri-youtube-line text-rose-600"></i> Video Clase
       </span>
     `;
 
     mediaPreviewHtml = `
-      <div class="relative rounded-xl overflow-hidden mb-3 aspect-video bg-slate-950 group/video cursor-pointer border border-slate-900/10 shadow-xs" onclick="openMediaModal(${item.id})">
-        <img src="${item.thumbnailUrl || 'https://images.unsplash.com/photo-1516116211227-bbc13c749013?auto=format&fit=crop&q=80&w=600'}" alt="${item.title}" class="w-full h-full object-cover group-hover/video:scale-105 transition-transform duration-300">
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent flex items-center justify-center">
-          <div class="w-11 h-11 rounded-full bg-rose-600 text-white flex items-center justify-center shadow-lg shadow-rose-900/40 group-hover/video:scale-110 transition-transform">
-            <i class="ri-play-fill text-xl ml-0.5"></i>
+      <div class="relative rounded-lg overflow-hidden mb-3 aspect-video bg-slate-900 group cursor-pointer" onclick="openMediaModal(${item.id})">
+        <img src="${item.thumbnailUrl || 'https://images.unsplash.com/photo-1516116211227-bbc13c749013?auto=format&fit=crop&q=80&w=600'}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-102 transition duration-200">
+        <div class="absolute inset-0 bg-slate-950/40 flex items-center justify-center">
+          <div class="w-10 h-10 rounded-full bg-rose-600 text-white flex items-center justify-center shadow">
+            <i class="ri-play-fill text-lg ml-0.5"></i>
           </div>
         </div>
-        <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-black/80 text-white backdrop-blur-xs flex items-center gap-1 border border-white/10">
-          <i class="ri-time-line text-[11px]"></i> ${item.fileSize}
+        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-black/80 text-white flex items-center gap-1">
+          <i class="ri-time-line text-[10px]"></i> ${item.fileSize}
         </span>
       </div>
     `;
@@ -56,32 +56,27 @@ function createResourceCardHtml(item) {
     ctaButtonsHtml = `
       <button 
         onclick="openMediaModal(${item.id})"
-        class="btn-primary text-xs shrink-0 bg-rose-600 hover:bg-rose-700 text-white border-rose-600 shadow-xs"
-        title="Ver video clase en reproductor universitario"
+        class="btn-primary text-xs shrink-0"
+        title="Ver video clase"
       >
         <i class="ri-play-circle-line text-sm"></i>
         <span>Ver Clase</span>
       </button>
     `;
   } else if (type === 'repo') {
-    cardClass = 'edu-card edu-card-repo flex flex-col justify-between overflow-hidden group';
+    cardClass = 'edu-card edu-card-repo flex flex-col justify-between overflow-hidden';
     typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-slate-900 text-white shadow-2xs">
-        <i class="ri-github-fill text-xs"></i> GitHub Repo
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-800 border border-slate-200">
+        <i class="ri-git-branch-line"></i> Repositorio
       </span>
     `;
 
     mediaPreviewHtml = `
       <div class="terminal-window mb-3">
         <div class="terminal-header">
-          <div class="flex items-center gap-1.5">
-            <span class="terminal-dot bg-rose-500/80"></span>
-            <span class="terminal-dot bg-amber-500/80"></span>
-            <span class="terminal-dot bg-emerald-500/80"></span>
-            <span class="ml-2 font-mono text-[10px] text-slate-400 font-medium">${item.language || 'git-repo'}</span>
-          </div>
-          <span class="flex items-center gap-1 font-mono text-[10px] text-amber-300 font-bold">
-            <i class="ri-star-fill text-[11px]"></i> ${item.stars || 148}
+          <span class="font-mono text-[11px] text-slate-300 font-medium">${item.language || 'git-repo'}</span>
+          <span class="flex items-center gap-1 font-mono text-[10px] text-slate-300">
+            <i class="ri-star-line text-[11px]"></i> ${item.stars || 148}
           </span>
         </div>
         <div class="terminal-body flex items-center justify-between py-2 px-3 bg-[#090d14]">
@@ -101,7 +96,7 @@ function createResourceCardHtml(item) {
       <div class="flex items-center gap-1.5 shrink-0">
         <button 
           onclick="copyCloneCommand('${item.cloneCommand || 'git clone ' + item.githubUrl}', this)"
-          class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition"
+          class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition"
           title="Copiar comando git clone"
         >
           <i class="ri-file-copy-line"></i>
@@ -110,34 +105,34 @@ function createResourceCardHtml(item) {
           href="${item.githubUrl || 'https://github.com'}" 
           target="_blank" 
           rel="noopener noreferrer" 
-          class="btn-primary text-xs bg-slate-900 hover:bg-slate-800 text-white border-slate-900 shadow-xs"
+          class="btn-primary text-xs"
           title="Abrir repositorio en GitHub"
         >
-          <i class="ri-github-fill text-sm"></i>
+          <i class="ri-github-line text-sm"></i>
           <span>Código</span>
         </a>
       </div>
     `;
   } else if (type === 'lab') {
     typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
-        <i class="ri-flask-line text-emerald-600 text-xs"></i> Guía Lab
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+        <i class="ri-flask-line text-emerald-600"></i> Guía Lab
       </span>
     `;
 
     mediaPreviewHtml = `
-      <div class="p-3 mb-3 bg-gradient-to-r from-emerald-50/70 via-emerald-50/40 to-teal-50/30 rounded-xl border border-emerald-200/60 flex items-center justify-between">
+      <div class="p-3 mb-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold shadow-xs">
+          <div class="w-8 h-8 rounded bg-emerald-600 text-white flex items-center justify-center font-bold">
             <i class="ri-flask-line text-base"></i>
           </div>
           <div>
-            <span class="text-[11px] font-bold text-slate-800 block">Guía Práctica UTP</span>
-            <span class="text-[10px] text-slate-500 font-medium">${item.fileFormat} • ${item.fileSize}</span>
+            <span class="text-xs font-semibold text-slate-800 block">Guía de Laboratorio</span>
+            <span class="text-[11px] text-slate-500">${item.fileFormat} • ${item.fileSize}</span>
           </div>
         </div>
-        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-white text-emerald-700 border border-emerald-200 shadow-2xs">
-          <i class="ri-shield-check-fill text-emerald-600"></i> Práctica Real
+        <span class="text-[10px] font-medium text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded">
+          Verificado
         </span>
       </div>
     `;
@@ -146,33 +141,33 @@ function createResourceCardHtml(item) {
       <button 
         onclick="handleDownloadResource(${item.id}, '${item.title.replace(/'/g, "\\'")}', '${item.fileSize}')"
         class="btn-primary text-xs shrink-0"
-        title="Descargar guía de laboratorio y archivos adjuntos"
+        title="Descargar guía de laboratorio"
       >
         <i class="ri-download-2-line"></i>
         <span>Descargar</span>
       </button>
     `;
   } else {
-    cardClass = 'edu-card edu-card-pdf flex flex-col justify-between overflow-hidden group';
+    cardClass = 'edu-card edu-card-pdf flex flex-col justify-between overflow-hidden';
     typeBadgeHtml = `
-      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-blue-50 text-brand-700 border border-blue-200 shadow-2xs">
-        <i class="ri-file-text-line text-brand-600 text-xs"></i> Solucionario PDF
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-brand-700 border border-blue-200">
+        <i class="ri-file-text-line text-brand-600"></i> Solucionario
       </span>
     `;
 
     mediaPreviewHtml = `
-      <div class="p-3 mb-3 bg-gradient-to-r from-blue-50/80 via-blue-50/40 to-indigo-50/30 rounded-xl border border-blue-200/60 flex items-center justify-between">
+      <div class="p-3 mb-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold shadow-xs">
+          <div class="w-8 h-8 rounded bg-brand-600 text-white flex items-center justify-center font-bold">
             <i class="ri-file-pdf-2-line text-base"></i>
           </div>
           <div>
-            <span class="text-[11px] font-bold text-slate-800 block">Documento Resuelto</span>
-            <span class="text-[10px] text-slate-500 font-medium">${item.fileFormat} • ${item.fileSize}</span>
+            <span class="text-xs font-semibold text-slate-800 block">Documento de Estudio</span>
+            <span class="text-[11px] text-slate-500">${item.fileFormat} • ${item.fileSize}</span>
           </div>
         </div>
-        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-white text-brand-700 border border-blue-200 shadow-2xs">
-          <i class="ri-checkbox-circle-fill text-brand-600"></i> Verificado
+        <span class="text-[10px] font-medium text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded">
+          Verificado
         </span>
       </div>
     `;
@@ -181,7 +176,7 @@ function createResourceCardHtml(item) {
       <button 
         onclick="handleDownloadResource(${item.id}, '${item.title.replace(/'/g, "\\'")}', '${item.fileSize}')"
         class="btn-primary text-xs shrink-0"
-        title="Descargar documento académico oficial"
+        title="Descargar documento académico"
       >
         <i class="ri-download-2-line"></i>
         <span>Descargar</span>
@@ -254,10 +249,7 @@ function createExpertCardHtml(mentor) {
       <div>
         <div class="flex items-start justify-between gap-3 mb-4">
           <div class="flex items-center gap-3">
-            <div class="relative">
-              <img src="${mentor.avatar}" alt="${mentor.name}" class="w-12 h-12 rounded-xl object-cover ring-2 ring-slate-100">
-              <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></span>
-            </div>
+            <img src="${mentor.avatar}" alt="${mentor.name}" class="w-11 h-11 rounded-lg object-cover ring-1 ring-slate-200">
             <div>
               <div class="flex items-center gap-1.5">
                 <h4 class="text-sm font-bold text-slate-900">${mentor.name}</h4>
@@ -271,7 +263,7 @@ function createExpertCardHtml(mentor) {
               </div>
             </div>
           </div>
-          <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200">
+          <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
             ${mentor.points}
           </span>
         </div>
@@ -283,15 +275,15 @@ function createExpertCardHtml(mentor) {
           </div>
         </div>
 
-        <div class="bg-slate-50 rounded-xl p-2.5 text-[11px] text-slate-500 flex items-center justify-between mb-4 border border-slate-200/60">
-          <span class="flex items-center gap-1.5 font-medium"><i class="ri-time-line text-brand-600"></i> ${mentor.schedule}</span>
-          <span class="font-bold text-slate-700">${mentor.sessions} sesiones</span>
+        <div class="bg-slate-50 rounded-lg p-2.5 text-[11px] text-slate-500 flex items-center justify-between mb-4 border border-slate-200">
+          <span class="flex items-center gap-1.5 font-medium"><i class="ri-time-line text-slate-400"></i> ${mentor.schedule}</span>
+          <span class="font-semibold text-slate-700">${mentor.sessions} sesiones</span>
         </div>
       </div>
 
       <button onclick="openBookingModal(${mentor.id}, '${mentor.name.replace(/'/g, "\\'")}')" class="btn-primary w-full text-xs">
         <i class="ri-calendar-check-line"></i>
-        <span>Solicitar Asesoría Par</span>
+        <span>Solicitar Asesoría</span>
       </button>
     </div>
   `;
@@ -303,12 +295,11 @@ function createCommunityCardHtml(community) {
     <div class="edu-card p-5 flex flex-col justify-between">
       <div>
         <div class="flex items-center justify-between gap-2 mb-2">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-brand-700 bg-brand-50 px-2.5 py-0.5 rounded-md border border-brand-200">
+          <span class="text-[10px] font-semibold uppercase tracking-wider text-brand-700 bg-brand-50 px-2 py-0.5 rounded border border-brand-200">
             ${community.type}
           </span>
-          <span class="flex items-center gap-1.5 text-[11px] font-bold text-emerald-600">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            ${community.onlineCount} en línea
+          <span class="text-[11px] font-medium text-slate-500">
+            ${community.onlineCount} activos
           </span>
         </div>
 
@@ -318,20 +309,20 @@ function createCommunityCardHtml(community) {
         
         <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
           <span class="flex items-center gap-1.5"><i class="ri-group-line text-slate-400"></i> ${community.members.toLocaleString()} miembros</span>
-          <span class="flex items-center gap-1 text-emerald-600 font-semibold"><i class="ri-broadcast-line"></i> Sala Activa</span>
+          <span class="text-slate-600 font-medium">Sala activa</span>
         </div>
       </div>
 
       <button 
         onclick="toggleCommunityMembership(${community.id})" 
-        class="mt-4 w-full py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+        class="mt-4 w-full py-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-2 ${
           community.isMember 
             ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200' 
             : 'btn-primary'
         }"
       >
-        <i class="${community.isMember ? 'ri-check-line text-emerald-600' : 'ri-user-add-line'}"></i>
-        <span>${community.isMember ? 'Miembro Activo' : 'Unirme a la Comunidad'}</span>
+        <i class="${community.isMember ? 'ri-check-line text-slate-600' : 'ri-user-add-line'}"></i>
+        <span>${community.isMember ? 'Miembro activo' : 'Unirme a la comunidad'}</span>
       </button>
     </div>
   `;
