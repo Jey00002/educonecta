@@ -791,12 +791,23 @@ function togglePasswordVisibility(inputId, btn) {
   btn.innerHTML = isPass ? '<i class="ri-eye-off-line text-sm"></i>' : '<i class="ri-eye-line text-sm"></i>';
 }
 
-function fillQuickDemoLogin(email, password) {
+function fillQuickDemoLogin(email, password, autoSubmit = true) {
   const idInput = document.getElementById('loginIdentifier');
   const passInput = document.getElementById('loginPassword');
   if (idInput && passInput) {
     idInput.value = email;
     passInput.value = password;
+  }
+  if (autoSubmit) {
+    const form = document.getElementById('loginForm');
+    if (form) {
+      if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+      } else {
+        const btn = document.getElementById('loginSubmitBtn');
+        if (btn) btn.click();
+      }
+    }
   }
 }
 

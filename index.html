@@ -826,7 +826,7 @@
   <!-- MODAL: VISTA PREVIA MULTIMEDIA (YOUTUBE / REPO / PDF)    -->
   <!-- ======================================================== -->
   <div id="resourcePreviewModal" class="modal-backdrop hidden" onclick="if(event.target === this) closeMediaModal()">
-    <div class="modal-dialog overflow-hidden max-w-2xl shadow-2xl rounded-2xl border border-slate-200 bg-white">
+    <div class="modal-dialog overflow-hidden max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl rounded-2xl border border-slate-200 bg-white">
       <div id="resourcePreviewContent" class="p-0">
         <!-- Renderizado dinámicamente -->
       </div>
@@ -945,13 +945,16 @@
           </button>
 
           <div class="pt-3 border-t border-slate-100">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Acceso rápido demo:</p>
-            <button type="button" onclick="fillQuickDemoLogin('alex.mendoza@educonecta.edu', 'demo12345')" class="w-full text-left p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs flex items-center justify-between">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Acceso rápido con 1 clic (Demo):</p>
+            <button type="button" onclick="fillQuickDemoLogin('alex.mendoza@educonecta.edu', 'demo12345', true)" class="w-full text-left p-2.5 rounded-lg bg-red-50 hover:bg-red-100/70 border border-red-200 text-xs flex items-center justify-between transition-colors cursor-pointer group">
               <div>
-                <p class="font-bold text-slate-800">Alex Mendoza</p>
-                <p class="text-[10px] text-slate-400">VI Ciclo · Sistemas</p>
+                <div class="flex items-center gap-1.5">
+                  <p class="font-bold text-slate-900 group-hover:text-red-700">Alex Mendoza</p>
+                  <span class="text-[9px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Entrar</span>
+                </div>
+                <p class="text-[10px] text-slate-500 mt-0.5">VI Ciclo · alex.mendoza@educonecta.edu</p>
               </div>
-              <i class="ri-arrow-right-s-line text-slate-400"></i>
+              <i class="ri-arrow-right-line text-red-600 font-bold group-hover:translate-x-1 transition-transform"></i>
             </button>
           </div>
         </form>

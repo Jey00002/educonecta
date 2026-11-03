@@ -275,152 +275,253 @@ function createCommunityCardHtml(community) {
   `;
 }
 
-// Renderizar modal de vista previa multimedia (YouTube, GitHub, PDF)
+// Renderizar modal de vista previa multimedia (YouTube, GitHub, PDF) con información académica enriquecida
 function renderResourcePreviewContent(item) {
   const type = item.resourceType || 'pdf';
 
-  let mediaBody = '';
+  // 1. Cabecera multimedia superior
+  let topMediaHeader = '';
 
   if (type === 'video') {
-    mediaBody = `
-      <div class="bg-black">
+    topMediaHeader = `
+      <div class="bg-black relative">
         <iframe 
-          src="https://www.youtube-nocookie.com/embed/${item.youtubeEmbedId || 'bZkzH5x0Ikk'}?autoplay=1" 
+          src="https://www.youtube-nocookie.com/embed/${item.youtubeEmbedId || 'OPS_Rh8BLZU'}?autoplay=1" 
           title="${item.title}" 
           class="w-full aspect-video border-b border-slate-800" 
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
           allowfullscreen
         ></iframe>
       </div>
-      <div class="p-6">
-        <div class="flex items-center justify-between gap-3 mb-2">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200">
-            <i class="ri-youtube-fill text-rose-600"></i> Video Clase Grabada • ${item.fileSize}
+      <div class="px-6 py-3 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-xs text-white">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-red-600 text-white">
+            <i class="ri-youtube-fill"></i> Video en Español
           </span>
-          <span class="text-xs text-slate-500 font-semibold flex items-center gap-1">
-            <i class="ri-eye-line"></i> ${item.downloadsCount} reproducciones
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-white/10 text-slate-200 border border-white/15">
+            <i class="ri-time-line"></i> ${item.fileSize}
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            <i class="ri-global-line"></i> ${item.channelName || 'Canal Educativo en Español'}
           </span>
         </div>
-
-        <h3 class="text-lg font-bold text-slate-900 leading-snug">${item.title}</h3>
-        <p class="text-xs text-slate-600 mt-2 leading-relaxed">${item.description}</p>
-
-        <!-- Notas del Tutor y Recursos de la Sesión -->
-        <div class="mt-4 p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2">
-          <p class="font-bold text-slate-800 flex items-center gap-1.5">
-            <i class="ri-file-list-3-line text-brand-600"></i> Material y Enlaces de la Clase:
-          </p>
-          <div class="flex flex-wrap gap-2 pt-1">
-            <a href="${item.youtubeUrl || '#'}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-rose-600 font-bold hover:bg-rose-50 flex items-center gap-1.5 transition">
-              <i class="ri-external-link-line"></i> Abrir en YouTube
-            </a>
-            <button onclick="handleDownloadResource(${item.id}, '${item.title.replace(/'/g, "\\'")}', 'Diapositivas PDF')" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-bold hover:bg-slate-100 flex items-center gap-1.5 transition">
-              <i class="ri-download-2-line text-brand-600"></i> Descargar Diapositivas (PDF)
-            </button>
-          </div>
-        </div>
+        <span class="text-slate-400 font-medium text-[11px] flex items-center gap-1">
+          <i class="ri-eye-line text-slate-300"></i> ${item.downloadsCount} visualizaciones registradas
+        </span>
       </div>
     `;
   } else if (type === 'repo') {
-    mediaBody = `
-      <div class="bg-slate-900 p-6 text-white border-b border-slate-800">
-        <div class="flex items-center justify-between gap-3 mb-3">
+    topMediaHeader = `
+      <div class="bg-slate-950 p-6 text-white border-b border-slate-800">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
           <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-white/10 text-white border border-white/20">
             <i class="ri-github-fill text-lg"></i> Repositorio de Código Fuente
           </span>
-          <span class="text-xs font-bold text-amber-400 flex items-center gap-1 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/20">
+          <span class="text-xs font-bold text-amber-400 flex items-center gap-1 bg-amber-400/10 px-2.5 py-1 rounded-md border border-amber-400/20">
             <i class="ri-star-fill text-xs"></i> ${item.stars || 148} estrellas en GitHub
           </span>
         </div>
 
-        <h3 class="text-lg font-bold text-white leading-snug">${item.title}</h3>
+        <h3 class="text-lg sm:text-xl font-bold text-white leading-snug">${item.title}</h3>
         <p class="text-xs text-slate-300 mt-2 leading-relaxed">${item.description}</p>
 
         <!-- Comando para clonar -->
         <div class="mt-4">
-          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Clonar Repositorio Localmente:</p>
-          <div class="flex items-center gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 font-mono text-xs text-emerald-400">
-            <span class="truncate flex-1">${item.cloneCommand || 'git clone ' + item.githubUrl}</span>
-            <button onclick="copyCloneCommand('${item.cloneCommand || 'git clone ' + item.githubUrl}')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-sans text-xs font-bold transition flex items-center gap-1 shrink-0">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Clonar Repositorio Localmente:</p>
+          <div class="flex items-center gap-2 bg-slate-900 p-2.5 rounded-xl border border-slate-800 font-mono text-xs text-emerald-400">
+            <span class="truncate flex-1">${item.cloneCommand || 'git clone ' + (item.githubUrl || '')}</span>
+            <button onclick="copyCloneCommand('${item.cloneCommand || 'git clone ' + (item.githubUrl || '')}')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-sans text-xs font-bold transition flex items-center gap-1 shrink-0 cursor-pointer">
               <i class="ri-file-copy-line"></i> Copiar
             </button>
           </div>
         </div>
       </div>
-
-      <div class="p-6">
-        <div class="flex items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-2 text-xs text-slate-600">
-            <span class="font-bold text-slate-800">Lenguaje Principal:</span>
-            <span class="px-2 py-0.5 bg-slate-100 rounded-md font-mono text-slate-700 font-bold">${item.language || 'Java / Python'}</span>
-          </div>
-          <a href="${item.githubUrl || 'https://github.com'}" target="_blank" rel="noopener noreferrer" class="btn-primary text-xs bg-slate-900 hover:bg-slate-800 border-slate-900">
-            <i class="ri-github-fill text-base"></i> Abrir en GitHub Oficial
-          </a>
-        </div>
-
-        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs">
-          <p class="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
-            <i class="ri-check-double-line text-emerald-600"></i> Estructura del Proyecto Incluida:
-          </p>
-          <ul class="list-disc list-inside text-slate-600 space-y-1 pl-1">
-            <li>Código fuente completo con separación de capas y documentación.</li>
-            <li>Archivos Dockerfile y docker-compose.yml para ejecución en 1 paso.</li>
-            <li>Pruebas unitarias automatizadas y datos semilla de prueba.</li>
-          </ul>
-        </div>
-      </div>
     `;
   } else {
-    mediaBody = `
-      <div class="bg-gradient-to-r from-brand-800 via-brand-700 to-brand-600 p-6 text-white">
-        <div class="flex items-center justify-between gap-3 mb-2">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-white/15 text-white border border-white/20">
-            <i class="ri-file-text-line"></i> ${type === 'lab' ? 'Guía de Laboratorio' : 'Documento Académico'}
+    topMediaHeader = `
+      <div class="bg-gradient-to-r from-red-700 via-red-600 to-rose-700 p-6 text-white border-b border-red-800">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-white/20 text-white border border-white/30">
+            <i class="ri-file-text-line"></i> ${type === 'lab' ? 'Guía Oficial de Laboratorio' : 'Solucionario Académico Oficial'}
           </span>
-          <span class="text-xs text-blue-100 font-semibold">${item.fileFormat} • ${item.fileSize}</span>
+          <span class="text-xs text-white/90 font-bold bg-black/20 px-2.5 py-1 rounded-md border border-white/10">
+            ${item.fileFormat} • ${item.fileSize}
+          </span>
         </div>
-        <h3 class="text-lg font-bold text-white leading-snug">${item.title}</h3>
-        <p class="text-xs text-blue-100 mt-2 leading-relaxed">${item.description}</p>
-      </div>
-
-      <div class="p-6">
-        <div class="grid grid-cols-2 gap-3 mb-4 text-xs">
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-            <p class="text-slate-400 font-bold text-[10px] uppercase tracking-wider">Curso Oficial</p>
-            <p class="font-bold text-slate-800 mt-0.5">${item.course}</p>
-          </div>
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-            <p class="text-slate-400 font-bold text-[10px] uppercase tracking-wider">Nivel y Ciclo</p>
-            <p class="font-bold text-slate-800 mt-0.5">${item.cycle}</p>
-          </div>
-        </div>
-
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
-          <div class="text-xs text-slate-500">
-            <p class="font-semibold text-slate-700">Verificado por la comunidad estudiantil</p>
-            <p class="text-[11px] text-slate-400 mt-0.5">${item.downloadsCount} descargas registradas</p>
-          </div>
-          <div class="flex items-center gap-2">
-            ${item.fileUrl ? `<a href="${item.fileUrl}" target="_blank" class="btn-secondary text-xs py-2 px-3 flex items-center gap-1.5"><i class="ri-eye-line text-brand-600"></i><span>Leer PDF</span></a>` : ''}
-            <button onclick="handleDownloadResource(${item.id}, '${item.title.replace(/'/g, "\\'")}', '${item.fileSize}')" class="btn-primary text-xs py-2.5 px-4 shadow-sm">
-              <i class="ri-download-2-line text-sm"></i>
-              <span>Descargar Archivo</span>
-            </button>
-          </div>
-        </div>
+        <h3 class="text-lg sm:text-xl font-bold text-white leading-snug">${item.title}</h3>
+        <p class="text-xs text-red-50 mt-2 leading-relaxed">${item.description}</p>
       </div>
     `;
   }
 
-  // Footer con información del autor y widget de calificación con estrellas
+  // 2. Ficha Técnica Académica (Grid)
+  const technicalSheet = `
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5 text-xs">
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+        <p class="text-slate-400 font-bold text-[10px] uppercase tracking-wider">Curso</p>
+        <p class="font-bold text-slate-800 mt-0.5 line-clamp-1">${item.course}</p>
+      </div>
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+        <p class="text-slate-400 font-bold text-[10px] uppercase tracking-wider">Ciclo y Nivel</p>
+        <p class="font-bold text-slate-800 mt-0.5">${item.cycle} · <span class="text-slate-600 font-medium">${item.difficulty || 'Intermedio'}</span></p>
+      </div>
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+        <p class="text-slate-400 font-bold text-[10px] uppercase tracking-wider">Docente / Cátedra</p>
+        <p class="font-bold text-slate-800 mt-0.5 line-clamp-1">${item.teacher || item.authorName}</p>
+      </div>
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+        <p class="text-slate-400 font-bold text-[10px] uppercase tracking-wider">Idioma</p>
+        <p class="font-bold text-emerald-700 mt-0.5 flex items-center gap-1">
+          <i class="ri-checkbox-circle-fill text-emerald-600"></i> ${item.language || 'Español'}
+        </p>
+      </div>
+    </div>
+  `;
+
+  // 3. Temario Académico y Unidades (Syllabus)
+  const syllabusItems = item.syllabus && item.syllabus.length > 0 
+    ? item.syllabus 
+    : [
+        'Unidad 1: Fundamentos teóricos y definiciones preliminares de la cátedra',
+        'Unidad 2: Modelado formal y análisis metodológico de casos representativos',
+        'Unidad 3: Resolución paso a paso de problemas con desarrollo analítico',
+        'Unidad 4: Interpretación de resultados y contraste con criterios de evaluación',
+        'Unidad 5: Casos avanzados y preguntas frecuentes de exámenes pasados'
+      ];
+
+  const syllabusHtml = `
+    <div class="mb-5">
+      <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5 mb-2.5">
+        <i class="ri-node-tree text-red-600 text-sm"></i> Temario Académico Desarrollado (${syllabusItems.length} Módulos)
+      </h4>
+      <div class="space-y-1.5">
+        ${syllabusItems.map((unit, idx) => `
+          <div class="flex items-start gap-2.5 p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 text-xs transition-colors">
+            <span class="w-5 h-5 rounded-md bg-red-100 text-red-700 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5 border border-red-200">
+              0${idx + 1}
+            </span>
+            <span class="text-slate-700 leading-relaxed font-medium">${unit}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  // 4. Objetivos y Prerrequisitos
+  const objectivesHtml = `
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5 text-xs">
+      <div class="p-3.5 bg-blue-50/70 border border-blue-200/70 rounded-xl">
+        <p class="font-bold text-blue-900 flex items-center gap-1.5 mb-1.5">
+          <i class="ri-focus-3-line text-blue-600 text-sm"></i> Objetivo de Aprendizaje:
+        </p>
+        <p class="text-blue-800 leading-relaxed text-[11px] sm:text-xs">
+          ${item.learningObjectives || 'Adquirir y consolidar los conceptos clave para la resolución de exámenes y laboratorios calificados del curso.'}
+        </p>
+      </div>
+
+      <div class="p-3.5 bg-amber-50/70 border border-amber-200/70 rounded-xl">
+        <p class="font-bold text-amber-900 flex items-center gap-1.5 mb-1.5">
+          <i class="ri-shield-keyhole-line text-amber-600 text-sm"></i> Prerrequisitos Sugeridos:
+        </p>
+        <p class="text-amber-800 leading-relaxed text-[11px] sm:text-xs">
+          ${item.prerequisites || 'Conocimientos de cursos previos del plan de estudios y nociones fundamentales del área.'}
+        </p>
+      </div>
+    </div>
+  `;
+
+  // 5. Lo que incluye este material
+  const includesList = item.includes && item.includes.length > 0 
+    ? item.includes 
+    : [
+        'Material 100% en español con rigor académico',
+        'Solucionario con desarrollo algebraico completo',
+        'Casos prácticos resueltos paso a paso',
+        'Acceso libre y validado por la comunidad estudiantil'
+      ];
+
+  const includesHtml = `
+    <div class="mb-5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+      <p class="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+        <i class="ri-checkbox-multiple-line text-emerald-600"></i> Lo que incluye este recurso académico:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+        ${includesList.map(inc => `
+          <div class="flex items-center gap-1.5 text-slate-700 text-[11px]">
+            <i class="ri-check-line text-emerald-600 font-bold shrink-0"></i>
+            <span>${inc}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  // 6. Botones de acción directa
+  let actionButtonsHtml = '';
+  if (type === 'video') {
+    actionButtonsHtml = `
+      <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-200">
+        <a href="${item.youtubeUrl || '#'}" target="_blank" rel="noopener noreferrer" class="btn-primary text-xs bg-red-600 hover:bg-red-700 py-2.5 px-4 flex items-center gap-2 shadow-sm">
+          <i class="ri-youtube-fill text-base"></i>
+          <span>Ver en YouTube en Español</span>
+        </a>
+        <button onclick="handleDownloadResource(${item.id}, '${item.title.replace(/'/g, "\\'")}', 'Diapositivas y Solucionario PDF')" class="btn-secondary text-xs py-2.5 px-4 flex items-center gap-2">
+          <i class="ri-file-pdf-line text-red-600 text-base"></i>
+          <span>Descargar Diapositivas (PDF)</span>
+        </button>
+      </div>
+    `;
+  } else if (type === 'repo') {
+    actionButtonsHtml = `
+      <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-200">
+        <a href="${item.githubUrl || 'https://github.com'}" target="_blank" rel="noopener noreferrer" class="btn-primary text-xs bg-slate-900 hover:bg-slate-800 py-2.5 px-4 flex items-center gap-2 shadow-sm">
+          <i class="ri-github-fill text-base"></i>
+          <span>Abrir Repositorio Oficial en GitHub</span>
+        </a>
+        <button onclick="copyCloneCommand('${item.cloneCommand || 'git clone ' + (item.githubUrl || '')}')" class="btn-secondary text-xs py-2.5 px-4 flex items-center gap-2">
+          <i class="ri-terminal-box-line text-emerald-600 text-base"></i>
+          <span>Copiar comando git clone</span>
+        </button>
+      </div>
+    `;
+  } else {
+    actionButtonsHtml = `
+      <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-200">
+        ${item.fileUrl ? `
+          <a href="${item.fileUrl}" target="_blank" class="btn-secondary text-xs py-2.5 px-4 flex items-center gap-2">
+            <i class="ri-eye-line text-red-600 text-base"></i>
+            <span>Leer en Navegador (PDF)</span>
+          </a>
+        ` : ''}
+        <button onclick="handleDownloadResource(${item.id}, '${item.title.replace(/'/g, "\\'")}', '${item.fileSize}')" class="btn-primary text-xs py-2.5 px-4 flex items-center gap-2 shadow-sm">
+          <i class="ri-download-2-line text-base"></i>
+          <span>Descargar Documento Oficial (${item.fileSize})</span>
+        </button>
+      </div>
+    `;
+  }
+
+  // 7. Renderizado Final Completo
   return `
     <div class="relative">
-      <button onclick="closeMediaModal()" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition focus:outline-none">
+      <button onclick="closeMediaModal()" class="absolute top-4 right-4 z-30 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition focus:outline-none cursor-pointer" title="Cerrar vista previa">
         <i class="ri-close-line text-lg"></i>
       </button>
 
-      ${mediaBody}
+      ${topMediaHeader}
+
+      <div class="p-6">
+        ${type === 'video' ? `
+          <h2 class="text-lg sm:text-xl font-bold text-slate-900 leading-snug mb-2">${item.title}</h2>
+          <p class="text-xs sm:text-sm text-slate-600 mb-5 leading-relaxed">${item.description}</p>
+        ` : ''}
+
+        ${technicalSheet}
+        ${syllabusHtml}
+        ${objectivesHtml}
+        ${includesHtml}
+        ${actionButtonsHtml}
+      </div>
 
       <!-- Barra de Autor y Calificación Interactiva -->
       <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -428,7 +529,7 @@ function renderResourcePreviewContent(item) {
           <img src="${item.authorAvatar}" alt="${item.authorName}" class="w-10 h-10 rounded-full object-cover ring-2 ring-slate-200 shrink-0">
           <div>
             <p class="text-xs font-bold text-slate-900">${item.authorName}</p>
-            <p class="text-[11px] text-slate-500">${item.authorRole}</p>
+            <p class="text-[11px] text-slate-500">${item.authorRole} · ${item.faculty || 'Facultad de Ingeniería'}</p>
           </div>
         </div>
 
@@ -443,6 +544,7 @@ function renderResourcePreviewContent(item) {
             <i onclick="submitRating(${item.id}, 5)" class="ri-star-fill text-amber-400 hover:scale-125 transition-transform text-sm"></i>
           </div>
           <span class="text-xs font-bold text-slate-800 ml-1">${item.rating.toFixed(1)} / 5</span>
+          <span class="text-[11px] text-slate-400">(${item.reviewsCount} reseñas)</span>
         </div>
       </div>
     </div>

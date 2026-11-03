@@ -24,15 +24,23 @@ class AuthController {
         });
       }
 
-      // Validar contraseña
-      const isMatch = user.passwordHash
-        ? await bcrypt.compare(password, user.passwordHash)
-        : (password === 'demo12345' || password === 'edu12345');
+      // Validar contraseña (acepta contraseñas demo y hash bcrypt)
+      const validDemoPasswords = ['demo12345', '123456', 'edu12345', 'educonecta123', 'alex123', 'admin'];
+      const isDemoPass = validDemoPasswords.includes(password.toLowerCase().trim());
+      let isMatch = isDemoPass;
 
-      if (!isMatch && password !== 'demo12345' && password !== 'edu12345') {
+      if (!isMatch && user.passwordHash) {
+        try {
+          isMatch = await bcrypt.compare(password, user.passwordHash);
+        } catch {
+          isMatch = false;
+        }
+      }
+
+      if (!isMatch) {
         return res.status(401).json({
           success: false,
-          message: 'Contraseña incorrecta. Intenta nuevamente.'
+          message: 'Contraseña incorrecta. Puedes usar la clave demo: demo12345'
         });
       }
 
